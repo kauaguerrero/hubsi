@@ -98,14 +98,14 @@ Se `SUPABASE_ACCESS_TOKEN` ou `SUPABASE_PROJECT_REF` faltar: escreva as migratio
 ## Fase 3 — Clients, utilitários e validações
 
 **Tarefas**
-- [ ] `src/lib/supabase/server.ts` (client com cookies via `@supabase/ssr`), `client.ts` (browser), `admin.ts` (service role, `server-only`)
-- [ ] `src/lib/validators/cpf.ts`: normalização e validação de dígitos verificadores
-- [ ] `src/lib/validators/schemas.ts`: schemas Zod de pedido (nome, CPF, e-mail, WhatsApp BR, turma, itens, aceite de privacidade), evento, produto, lote, gestão
-- [ ] `src/lib/utils/money.ts`: centavos ↔ BRL
-- [ ] `src/lib/utils/datas.ts`: formatação em `America/Sao_Paulo`
-- [ ] `src/lib/utils/codigo-pedido.ts`: gerador do código `HSI-XXXXXX`
-- [ ] `src/lib/auth/roles.ts`: `getPerfil()`, `requireRole(papeis)` que redireciona para `/admin/login`
-- [ ] Testes: CPF (válidos, inválidos, repetidos tipo 111.111.111-11), money, código de pedido, schema de pedido
+- [x] `src/lib/supabase/server.ts` (client com cookies via `@supabase/ssr`), `client.ts` (browser), `admin.ts` (service role, `server-only`)
+- [x] `src/lib/validators/cpf.ts`: normalização e validação de dígitos verificadores
+- [x] `src/lib/validators/schemas.ts`: schemas Zod de pedido (nome, CPF, e-mail, WhatsApp BR, turma, itens, aceite de privacidade), evento, produto, lote, gestão
+- [x] `src/lib/utils/money.ts`: centavos ↔ BRL
+- [x] `src/lib/utils/datas.ts`: formatação em `America/Sao_Paulo`
+- [x] `src/lib/utils/codigo-pedido.ts`: gerador do código `HSI-XXXXXX`
+- [x] `src/lib/auth/roles.ts`: `getPerfil()`, `requireRole(papeis)` que redireciona para `/admin/login`
+- [x] Testes: CPF (válidos, inválidos, repetidos tipo 111.111.111-11), money, código de pedido, schema de pedido
 
 **Validação:** `pnpm typecheck && pnpm lint && pnpm test`
 

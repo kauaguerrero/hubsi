@@ -5,6 +5,7 @@
 - **Fase 1 — Bootstrap:** app Next 16 + Tailwind 4 na raiz, dependências do plano, scripts, vitest (1 teste), tsconfig estrito com `noUncheckedIndexedAccess`, estrutura de pastas, `.env.example`, `env.ts`. `typecheck`, `lint`, `test` e `build` verdes. `typecheck` roda `next typegen` antes do `tsc` (tipos globais `LayoutProps`).
 
 - **Fase 2 — Banco:** migrations 0001–0003 aplicadas no projeto remoto, seed aplicado (`db push --include-seed`), `database.ts` gerado, `scripts/check-rls.mts` (rodar com `pnpm tsx --env-file=.env.local scripts/check-rls.mts`) confirma RLS: anon não lê pedidos/clientes/itens/webhook/rate_limits/log/perfis e lê o conteúdo público.
+- **Fase 3:** clients Supabase (server/client/admin), validadores (CPF, Zod), utilitários (money, datas, código de pedido), `requireRole`. 20 testes verdes.
 
 ## Decisões
 
