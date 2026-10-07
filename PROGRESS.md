@@ -15,6 +15,8 @@
 
 ## Decisões
 
+- **Redesign (2026-10):** o tema escuro azul-marinho foi trocado por tema claro moderno com degradê ciano→violeta (pedido do D.A.). Tokens em `globals.css` (`--color-accent` violeta + `--color-accent-2` ciano, utilitários `bg-brand`, `text-gradient`, `bg-brand-soft`), fontes Bricolage Grotesque + Inter + JetBrains Mono, hero com `AuroraBackground` (CSS puro, sem `framer-motion`), cartões com sombra e elevação no hover, títulos sem caixa alta. OG images e e-mail também ficaram claros. `CLAUDE.md` atualizado. Sem rolagem horizontal em 360 px (12 páginas).
+
 - Dependências fora da lista do plano: `tsx` (devDependency) para rodar `scripts/*.mts`, como o próprio plano pressupõe. Nenhuma outra.
 
 - Admin: `src/proxy.ts` (Next 16) exige sessão em `/admin/*`; o papel é checado por `requireRole` em cada página/action (RLS é a barreira real). Formulários usam `FormAcao` (chama a action manualmente para não resetar campos em erro). Uploads de imagem vão do navegador direto ao Storage (sessão do admin) e a action só grava a URL após validar o prefixo do bucket. Datas do painel são em horário de Brasília (offset fixo -03:00). Remover variação já vendida apenas a desativa.

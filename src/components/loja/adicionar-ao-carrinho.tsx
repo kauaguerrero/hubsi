@@ -19,26 +19,48 @@ type Props = {
   variacoes: Variacao[];
 };
 
-const unicos = (valores: (string | null)[]) => [...new Set(valores.filter((v): v is string => !!v))];
+const unicos = (valores: (string | null)[]) => [
+  ...new Set(valores.filter((v): v is string => !!v)),
+];
 
-export function AdicionarAoCarrinho({ produtoId, loteId, slug, nome, precoCentavos, foto, variacoes }: Props) {
+export function AdicionarAoCarrinho({
+  produtoId,
+  loteId,
+  slug,
+  nome,
+  precoCentavos,
+  foto,
+  variacoes,
+}: Props) {
   const { adicionar } = useCarrinho();
   const tamanhos = unicos(variacoes.map((v) => v.tamanho));
   const cores = unicos(variacoes.map((v) => v.cor));
 
-  const [tamanho, setTamanho] = useState(tamanhos.length === 1 ? tamanhos[0]! : "");
+  const [tamanho, setTamanho] = useState(
+    tamanhos.length === 1 ? tamanhos[0]! : "",
+  );
   const [cor, setCor] = useState(cores.length === 1 ? cores[0]! : "");
   const [quantidade, setQuantidade] = useState(1);
-  const [mensagem, setMensagem] = useState<{ tipo: "ok" | "erro"; texto: string } | null>(null);
+  const [mensagem, setMensagem] = useState<{
+    tipo: "ok" | "erro";
+    texto: string;
+  } | null>(null);
 
   const precisaVariacao = variacoes.length > 0;
   const variacao = precisaVariacao
-    ? variacoes.find((v) => (v.tamanho ?? "") === (tamanhos.length ? tamanho : "") && (v.cor ?? "") === (cores.length ? cor : ""))
+    ? variacoes.find(
+        (v) =>
+          (v.tamanho ?? "") === (tamanhos.length ? tamanho : "") &&
+          (v.cor ?? "") === (cores.length ? cor : ""),
+      )
     : undefined;
 
   function adicionarAoCarrinho() {
     if (precisaVariacao && !variacao) {
-      setMensagem({ tipo: "erro", texto: "Escolha tamanho e cor antes de adicionar." });
+      setMensagem({
+        tipo: "erro",
+        texto: "Escolha tamanho e cor antes de adicionar.",
+      });
       return;
     }
     const r = adicionar({
@@ -48,35 +70,62 @@ export function AdicionarAoCarrinho({ produtoId, loteId, slug, nome, precoCentav
       loteId,
       slug,
       nome,
-      variacaoRotulo: variacao ? [variacao.tamanho, variacao.cor].filter(Boolean).join(" / ") : null,
+      variacaoRotulo: variacao
+        ? [variacao.tamanho, variacao.cor].filter(Boolean).join(" / ")
+        : null,
       precoCentavos,
       foto,
     });
-    setMensagem(r.ok ? { tipo: "ok", texto: "Adicionado ao carrinho." } : { tipo: "erro", texto: r.erro });
+    setMensagem(
+      r.ok
+        ? { tipo: "ok", texto: "Adicionado ao carrinho." }
+        : { tipo: "erro", texto: r.erro },
+    );
   }
 
   return (
     <div className="flex flex-col gap-4">
       <div className="grid gap-4 sm:grid-cols-2">
         {tamanhos.length > 1 && (
-          <Select id="tamanho" label="Tamanho" value={tamanho} onChange={(e) => setTamanho(e.target.value)}>
+          <Select
+            id="tamanho"
+            label="Tamanho"
+            value={tamanho}
+            onChange={(e) => setTamanho(e.target.value)}
+          >
             <option value="">Selecione</option>
             {tamanhos.map((t) => (
-              <option key={t} value={t}>{t}</option>
+              <option key={t} value={t}>
+                {t}
+              </option>
             ))}
           </Select>
         )}
         {cores.length > 1 && (
-          <Select id="cor" label="Cor" value={cor} onChange={(e) => setCor(e.target.value)}>
+          <Select
+            id="cor"
+            label="Cor"
+            value={cor}
+            onChange={(e) => setCor(e.target.value)}
+          >
             <option value="">Selecione</option>
             {cores.map((c) => (
-              <option key={c} value={c}>{c}</option>
+              <option key={c} value={c}>
+                {c}
+              </option>
             ))}
           </Select>
         )}
-        <Select id="quantidade" label="Quantidade" value={quantidade} onChange={(e) => setQuantidade(Number(e.target.value))}>
+        <Select
+          id="quantidade"
+          label="Quantidade"
+          value={quantidade}
+          onChange={(e) => setQuantidade(Number(e.target.value))}
+        >
           {Array.from({ length: MAX_POR_ITEM }, (_, i) => i + 1).map((n) => (
-            <option key={n} value={n}>{n}</option>
+            <option key={n} value={n}>
+              {n}
+            </option>
           ))}
         </Select>
       </div>
@@ -87,15 +136,19 @@ export function AdicionarAoCarrinho({ produtoId, loteId, slug, nome, precoCentav
 
       <div aria-live="polite">
         {mensagem?.tipo === "ok" && (
-          <p className="flex flex-wrap items-center gap-3 text-success">
+          <p className="text-success flex flex-wrap items-center gap-3">
             {mensagem.texto}
-            <ButtonLink href="/checkout" variante="secundario">Ir para o checkout</ButtonLink>
+            <ButtonLink href="/checkout" variante="secundario">
+              Ir para o checkout
+            </ButtonLink>
           </p>
         )}
         {mensagem?.tipo === "erro" && (
           <p role="alert" className="text-danger">
             {mensagem.texto}{" "}
-            <Link href="/checkout" className="underline">Ver carrinho</Link>
+            <Link href="/checkout" className="underline">
+              Ver carrinho
+            </Link>
           </p>
         )}
       </div>

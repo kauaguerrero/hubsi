@@ -19,23 +19,23 @@ export default async function Image({ params }: { params: Promise<{ slug: string
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "#0A1628",
-          color: "#fff",
+          background: "linear-gradient(135deg, #ecfeff 0%, #f5f3ff 55%, #ede9fe 100%)",
+          color: "#12122a",
           padding: 72,
         }}
       >
         <div style={{ display: "flex", fontSize: 40, fontWeight: 700, letterSpacing: 2 }}>
-          HUB <span style={{ color: "#22D3EE", marginLeft: 12 }}>S.I.</span>
+          HUB <span style={{ color: "#7c3aed", marginLeft: 12 }}>S.I.</span>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
           <div style={{ display: "flex", fontSize: 84, fontWeight: 700, lineHeight: 1.05 }}>
             {produto?.nome ?? "Produto"}
           </div>
           {produto && (
-            <div style={{ display: "flex", fontSize: 48, color: "#22D3EE" }}>{formatarBRL(produto.preco_centavos)}</div>
+            <div style={{ display: "flex", fontSize: 48, color: "#7c3aed" }}>{formatarBRL(produto.preco_centavos)}</div>
           )}
         </div>
-        <div style={{ display: "flex", fontSize: 28, color: "#9FB3C8" }}>Pré-venda do curso de Sistemas de Informação</div>
+        <div style={{ display: "flex", fontSize: 28, color: "#55587a" }}>Pré-venda do curso de Sistemas de Informação</div>
       </div>
     ),
     size,

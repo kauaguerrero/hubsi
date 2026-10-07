@@ -10,7 +10,7 @@ const aDefinir = <span className="text-accent">[a definir pelo D.A.]</span>;
 export default function PrivacidadePage() {
   return (
     <article className="flex max-w-2xl flex-col gap-8">
-      <h1 className="text-5xl uppercase sm:text-6xl">Privacidade</h1>
+      <h1 className="text-5xl sm:text-6xl">Privacidade</h1>
       <p className="text-muted">
         Este aviso explica quais dados pessoais o Hub S.I. coleta quando você faz um pedido na loja, para que servem e
         quem pode acessá-los.

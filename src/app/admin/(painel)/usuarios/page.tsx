@@ -16,7 +16,7 @@ export default async function UsuariosPage() {
 
   return (
     <div className="flex max-w-2xl flex-col gap-8">
-      <h1 className="text-5xl uppercase">Usuários</h1>
+      <h1 className="text-5xl">Usuários</h1>
 
       <section aria-labelledby="convidar" className="flex flex-col gap-4">
         <h2 id="convidar" className="text-3xl">Convidar</h2>

@@ -29,7 +29,7 @@ export default async function EventoAdminPage({ params }: PageProps<"/admin/even
 
   return (
     <div className="flex max-w-2xl flex-col gap-10">
-      <h1 className="text-5xl uppercase">{novo ? "Novo evento" : evento?.titulo}</h1>
+      <h1 className="text-5xl">{novo ? "Novo evento" : evento?.titulo}</h1>
 
       <FormAcao action={salvarEvento.bind(null, novo ? null : id)}>
         <Input id="titulo" name="titulo" label="Título" defaultValue={evento?.titulo} required />

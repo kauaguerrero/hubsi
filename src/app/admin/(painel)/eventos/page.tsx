@@ -15,7 +15,7 @@ export default async function EventosAdminPage() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-5xl uppercase">Eventos</h1>
+        <h1 className="text-5xl">Eventos</h1>
         <ButtonLink href="/admin/eventos/novo">Novo evento</ButtonLink>
       </div>
       <ul className="flex flex-col gap-3">

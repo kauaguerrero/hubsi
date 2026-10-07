@@ -13,7 +13,7 @@ export default async function HubAdminPage() {
 
   return (
     <div className="flex max-w-2xl flex-col gap-8">
-      <h1 className="text-5xl uppercase">Hub</h1>
+      <h1 className="text-5xl">Hub</h1>
 
       <section aria-labelledby="novo" className="flex flex-col gap-4">
         <h2 id="novo" className="text-3xl">Novo link</h2>

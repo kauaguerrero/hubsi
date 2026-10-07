@@ -13,7 +13,14 @@ type Props = {
 };
 
 /** Botão de ação simples (um clique) com confirmação opcional. */
-export function BotaoAcao({ action, children, confirmar, variante = "secundario", tamanho, className }: Props) {
+export function BotaoAcao({
+  action,
+  children,
+  confirmar,
+  variante = "secundario",
+  tamanho,
+  className,
+}: Props) {
   return (
     <form
       action={action}
@@ -21,7 +28,12 @@ export function BotaoAcao({ action, children, confirmar, variante = "secundario"
         if (confirmar && !window.confirm(confirmar)) e.preventDefault();
       }}
     >
-      <Button type="submit" variante={variante} tamanho={tamanho} className={className}>
+      <Button
+        type="submit"
+        variante={variante}
+        tamanho={tamanho}
+        className={className}
+      >
         {children}
       </Button>
     </form>

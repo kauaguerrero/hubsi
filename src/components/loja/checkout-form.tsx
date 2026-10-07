@@ -24,16 +24,28 @@ function mascaraTelefone(v: string) {
   const d = v.replace(/\D/g, "").slice(0, 11);
   if (d.length <= 2) return d;
   if (d.length <= 6) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
-  if (d.length <= 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
+  if (d.length <= 10)
+    return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
   return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
 }
 
 export function CheckoutForm() {
   const { itens, pronto, total, alterar, remover } = useCarrinho();
-  const [estado, formAction, pendente] = useActionState<EstadoForm, FormData>(criarPedido, {});
-  const [valores, setValores] = useState({ nome: "", cpf: "", email: "", whatsapp: "", turma: "" });
+  const [estado, formAction, pendente] = useActionState<EstadoForm, FormData>(
+    criarPedido,
+    {},
+  );
+  const [valores, setValores] = useState({
+    nome: "",
+    cpf: "",
+    email: "",
+    whatsapp: "",
+    turma: "",
+  });
   const [aceite, setAceite] = useState(false);
-  const [errosCliente, setErrosCliente] = useState<Record<string, string[] | undefined>>({});
+  const [errosCliente, setErrosCliente] = useState<
+    Record<string, string[] | undefined>
+  >({});
 
   if (!pronto) return <p className="text-muted">Carregando carrinho…</p>;
 
@@ -47,13 +59,22 @@ export function CheckoutForm() {
     );
   }
 
-  const itensEnvio = itens.map((i) => ({ produtoId: i.produtoId, variacaoId: i.variacaoId, quantidade: i.quantidade }));
+  const itensEnvio = itens.map((i) => ({
+    produtoId: i.produtoId,
+    variacaoId: i.variacaoId,
+    quantidade: i.quantidade,
+  }));
   const erros = { ...estado.campos, ...errosCliente };
-  const set = (campo: keyof typeof valores) => (e: { target: { value: string } }) =>
-    setValores((v) => ({ ...v, [campo]: e.target.value }));
+  const set =
+    (campo: keyof typeof valores) => (e: { target: { value: string } }) =>
+      setValores((v) => ({ ...v, [campo]: e.target.value }));
 
   function validarAntes(e: FormEvent<HTMLFormElement>) {
-    const r = pedidoSchema.safeParse({ ...valores, itens: itensEnvio, aceitePrivacidade: aceite });
+    const r = pedidoSchema.safeParse({
+      ...valores,
+      itens: itensEnvio,
+      aceitePrivacidade: aceite,
+    });
     if (!r.success) {
       e.preventDefault();
       setErrosCliente(z.flattenError(r.error).fieldErrors);
@@ -64,11 +85,25 @@ export function CheckoutForm() {
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
-      <form action={formAction} onSubmit={validarAntes} noValidate className="flex flex-col gap-5" aria-busy={pendente}>
+      <form
+        action={formAction}
+        onSubmit={validarAntes}
+        noValidate
+        className="flex flex-col gap-5"
+        aria-busy={pendente}
+      >
         <h2 className="text-3xl">Seus dados</h2>
         <input type="hidden" name="itens" value={JSON.stringify(itensEnvio)} />
 
-        <Input id="nome" name="nome" label="Nome completo" autoComplete="name" value={valores.nome} onChange={set("nome")} erro={erros.nome?.[0]} />
+        <Input
+          id="nome"
+          name="nome"
+          label="Nome completo"
+          autoComplete="name"
+          value={valores.nome}
+          onChange={set("nome")}
+          erro={erros.nome?.[0]}
+        />
         <Input
           id="cpf"
           name="cpf"
@@ -76,11 +111,22 @@ export function CheckoutForm() {
           inputMode="numeric"
           autoComplete="off"
           value={valores.cpf}
-          onChange={(e) => setValores((v) => ({ ...v, cpf: mascaraCpf(e.target.value) }))}
+          onChange={(e) =>
+            setValores((v) => ({ ...v, cpf: mascaraCpf(e.target.value) }))
+          }
           dica="Usado para emitir a cobrança. Não aparece publicamente."
           erro={erros.cpf?.[0]}
         />
-        <Input id="email" name="email" type="email" label="E-mail" autoComplete="email" value={valores.email} onChange={set("email")} erro={erros.email?.[0]} />
+        <Input
+          id="email"
+          name="email"
+          type="email"
+          label="E-mail"
+          autoComplete="email"
+          value={valores.email}
+          onChange={set("email")}
+          erro={erros.email?.[0]}
+        />
         <Input
           id="whatsapp"
           name="whatsapp"
@@ -88,10 +134,22 @@ export function CheckoutForm() {
           label="WhatsApp"
           autoComplete="tel"
           value={valores.whatsapp}
-          onChange={(e) => setValores((v) => ({ ...v, whatsapp: mascaraTelefone(e.target.value) }))}
+          onChange={(e) =>
+            setValores((v) => ({
+              ...v,
+              whatsapp: mascaraTelefone(e.target.value),
+            }))
+          }
           erro={erros.whatsapp?.[0]}
         />
-        <Input id="turma" name="turma" label="Turma (opcional)" value={valores.turma} onChange={set("turma")} erro={erros.turma?.[0]} />
+        <Input
+          id="turma"
+          name="turma"
+          label="Turma (opcional)"
+          value={valores.turma}
+          onChange={set("turma")}
+          erro={erros.turma?.[0]}
+        />
 
         <Checkbox
           id="aceitePrivacidade"
@@ -102,7 +160,11 @@ export function CheckoutForm() {
           label={
             <>
               Li e aceito o{" "}
-              <Link href="/privacidade" target="_blank" className="text-accent underline">
+              <Link
+                href="/privacidade"
+                target="_blank"
+                className="text-accent underline"
+              >
                 aviso de privacidade
               </Link>
               .
@@ -111,58 +173,91 @@ export function CheckoutForm() {
         />
 
         {(estado.erro || erros.itens) && (
-          <p role="alert" className="rounded-lg border border-danger px-4 py-3 text-danger">
+          <p
+            role="alert"
+            className="border-danger text-danger rounded-lg border px-4 py-3"
+          >
             {estado.erro ?? erros.itens?.[0]}
           </p>
         )}
 
         <Button type="submit" tamanho="lg" disabled={pendente}>
-          {pendente ? "Gerando pagamento…" : `Finalizar pedido · ${formatarBRL(total)}`}
+          {pendente
+            ? "Gerando pagamento…"
+            : `Finalizar pedido · ${formatarBRL(total)}`}
         </Button>
       </form>
 
       <aside aria-labelledby="resumo">
         <Card className="flex flex-col gap-4 lg:sticky lg:top-24">
-          <h2 id="resumo" className="text-3xl">Resumo</h2>
+          <h2 id="resumo" className="text-3xl">
+            Resumo
+          </h2>
           <ul className="flex flex-col gap-4">
             {itens.map((i) => (
               <li key={`${i.produtoId}:${i.variacaoId}`} className="flex gap-3">
-                {i.foto && <Image src={i.foto} alt="" width={56} height={56} className="size-14 rounded-lg object-cover" />}
+                {i.foto && (
+                  <Image
+                    src={i.foto}
+                    alt=""
+                    width={56}
+                    height={56}
+                    className="size-14 rounded-lg object-cover"
+                  />
+                )}
                 <div className="flex flex-1 flex-col gap-1">
-                  <p className="font-display text-lg leading-tight font-bold">{i.nome}</p>
-                  {i.variacaoRotulo && <p className="text-sm text-muted">{i.variacaoRotulo}</p>}
+                  <p className="font-display text-lg leading-tight font-bold">
+                    {i.nome}
+                  </p>
+                  {i.variacaoRotulo && (
+                    <p className="text-muted text-sm">{i.variacaoRotulo}</p>
+                  )}
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
                       aria-label={`Diminuir quantidade de ${i.nome}`}
                       onClick={() => alterar(i, i.quantidade - 1)}
-                      className="size-11 rounded-lg border border-border"
+                      className="border-border size-11 rounded-lg border"
                     >
                       −
                     </button>
-                    <span className="min-w-6 text-center font-mono" aria-live="polite">{i.quantidade}</span>
+                    <span
+                      className="min-w-6 text-center font-mono"
+                      aria-live="polite"
+                    >
+                      {i.quantidade}
+                    </span>
                     <button
                       type="button"
                       aria-label={`Aumentar quantidade de ${i.nome}`}
                       onClick={() => alterar(i, i.quantidade + 1)}
-                      className="size-11 rounded-lg border border-border"
+                      className="border-border size-11 rounded-lg border"
                     >
                       +
                     </button>
-                    <button type="button" onClick={() => remover(i)} className="ml-auto min-h-11 px-2 text-sm text-danger underline">
+                    <button
+                      type="button"
+                      onClick={() => remover(i)}
+                      className="text-danger ml-auto min-h-11 px-2 text-sm underline"
+                    >
                       Remover
                     </button>
                   </div>
                 </div>
-                <p className="font-mono">{formatarBRL(i.precoCentavos * i.quantidade)}</p>
+                <p className="font-mono">
+                  {formatarBRL(i.precoCentavos * i.quantidade)}
+                </p>
               </li>
             ))}
           </ul>
-          <p className="flex justify-between border-t border-border pt-4 font-mono text-lg">
+          <p className="border-border flex justify-between border-t pt-4 font-mono text-lg">
             <span>Total</span>
             <strong>{formatarBRL(total)}</strong>
           </p>
-          <p className="text-sm text-muted">O valor final é confirmado pelo servidor a partir dos preços do lote.</p>
+          <p className="text-muted text-sm">
+            O valor final é confirmado pelo servidor a partir dos preços do
+            lote.
+          </p>
         </Card>
       </aside>
     </div>

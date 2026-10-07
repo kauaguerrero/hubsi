@@ -17,7 +17,7 @@ export default async function ProdutosPage({ searchParams }: PageProps<"/admin/p
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-5xl uppercase">Produtos</h1>
+        <h1 className="text-5xl">Produtos</h1>
         <ButtonLink href="/admin/produtos/novo">Novo produto</ButtonLink>
       </div>
       {erro && <p role="alert" className="rounded-lg border border-danger px-4 py-3 text-danger">Este produto já foi vendido e não pode ser excluído. Desative-o.</p>}

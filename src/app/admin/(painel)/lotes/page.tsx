@@ -14,7 +14,7 @@ export default async function LotesPage({ searchParams }: PageProps<"/admin/lote
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-5xl uppercase">Lotes</h1>
+        <h1 className="text-5xl">Lotes</h1>
         <ButtonLink href="/admin/lotes/novo">Novo lote</ButtonLink>
       </div>
       {erro && <p role="alert" className="rounded-lg border border-danger px-4 py-3 text-danger">Este lote tem pedidos ou produtos e não pode ser excluído. Feche-o em vez de excluir.</p>}

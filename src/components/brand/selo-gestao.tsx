@@ -7,14 +7,20 @@ export async function SeloGestao() {
 
   return (
     <span
-      className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1 font-mono text-xs text-muted"
+      className="border-border bg-surface text-muted inline-flex items-center gap-2 rounded-full border px-3 py-1 font-mono text-xs shadow-sm"
       title={`Gestão ${gestao.nome} ${gestao.ano}`}
     >
       {gestao.logo_url ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={gestao.logo_url} alt="" width={16} height={16} className="size-4 rounded-full object-cover" />
+        <img
+          src={gestao.logo_url}
+          alt=""
+          width={16}
+          height={16}
+          className="size-4 rounded-full object-cover"
+        />
       ) : (
-        <span aria-hidden="true" className="size-2 rounded-full bg-accent" />
+        <span aria-hidden="true" className="bg-brand size-2 rounded-full" />
       )}
       <span>
         Gestão {gestao.nome} {gestao.ano}

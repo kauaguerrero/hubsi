@@ -10,9 +10,15 @@ export function CarrinhoBadge() {
   return (
     <Link
       href="/checkout"
-      className="relative inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-border text-fg hover:border-accent"
+      className="border-border bg-surface text-fg hover:border-accent hover:text-accent relative inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border shadow-sm"
     >
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        aria-hidden="true"
+      >
         <path
           d="M3 4h2l2.4 11h10.2L20 7H6.2M9 20h.01M17 20h.01"
           stroke="currentColor"
@@ -21,11 +27,14 @@ export function CarrinhoBadge() {
           strokeLinejoin="round"
         />
       </svg>
-      <span className="sr-only">Carrinho{qtd > 0 ? `, ${qtd} ${qtd === 1 ? "item" : "itens"}` : ", vazio"}</span>
+      <span className="sr-only">
+        Carrinho
+        {qtd > 0 ? `, ${qtd} ${qtd === 1 ? "item" : "itens"}` : ", vazio"}
+      </span>
       {qtd > 0 && (
         <span
           aria-hidden="true"
-          className="absolute -top-1.5 -right-1.5 flex min-w-5 items-center justify-center rounded-full bg-accent px-1 font-mono text-xs font-bold text-bg"
+          className="bg-accent text-on-accent absolute -top-1.5 -right-1.5 flex min-w-5 items-center justify-center rounded-full px-1 font-mono text-xs font-bold"
         >
           {qtd}
         </span>

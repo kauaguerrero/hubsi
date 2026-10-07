@@ -34,7 +34,7 @@ export default async function ProdutoAdminPage({ params }: PageProps<"/admin/pro
 
   return (
     <div className="flex max-w-2xl flex-col gap-10">
-      <h1 className="text-5xl uppercase">{novo ? "Novo produto" : produto?.nome}</h1>
+      <h1 className="text-5xl">{novo ? "Novo produto" : produto?.nome}</h1>
 
       <FormAcao action={salvarProduto.bind(null, novo ? null : id)}>
         <Select id="lote_id" name="lote_id" label="Lote" defaultValue={produto?.lote_id} required>

@@ -41,7 +41,7 @@ export default async function SobrePage() {
   return (
     <div className="flex flex-col gap-12">
       <header className="flex max-w-2xl flex-col gap-4">
-        <h1 className="text-5xl uppercase sm:text-6xl">Sobre</h1>
+        <h1 className="text-5xl sm:text-6xl">Sobre</h1>
         <p className="text-lg text-muted">
           O Diretório Acadêmico de Sistemas de Informação da FAFRAM representa os alunos do curso: organiza eventos,
           conecta turmas, cuida da loja de produtos do curso e leva as demandas dos estudantes à coordenação.

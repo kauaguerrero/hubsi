@@ -8,22 +8,34 @@ const MEDIDAS = [
 
 export function TabelaMedidas() {
   return (
-    <details className="rounded-xl border border-border bg-surface px-4 py-3">
-      <summary className="min-h-11 cursor-pointer py-2 font-display text-xl font-bold">Tabela de medidas</summary>
+    <details className="border-border bg-surface rounded-xl border px-4 py-3">
+      <summary className="font-display min-h-11 cursor-pointer py-2 text-xl font-bold">
+        Tabela de medidas
+      </summary>
       <div className="overflow-x-auto">
         <table className="w-full text-left font-mono text-sm">
-          <caption className="pb-2 text-left text-muted">Medidas aproximadas, em centímetros.</caption>
+          <caption className="text-muted pb-2 text-left">
+            Medidas aproximadas, em centímetros.
+          </caption>
           <thead>
-            <tr className="border-b border-border text-muted">
-              <th scope="col" className="py-2 pr-4">Tamanho</th>
-              <th scope="col" className="py-2 pr-4">Largura</th>
-              <th scope="col" className="py-2">Comprimento</th>
+            <tr className="border-border text-muted border-b">
+              <th scope="col" className="py-2 pr-4">
+                Tamanho
+              </th>
+              <th scope="col" className="py-2 pr-4">
+                Largura
+              </th>
+              <th scope="col" className="py-2">
+                Comprimento
+              </th>
             </tr>
           </thead>
           <tbody>
             {MEDIDAS.map((m) => (
-              <tr key={m.tamanho} className="border-b border-border/50">
-                <th scope="row" className="py-2 pr-4">{m.tamanho}</th>
+              <tr key={m.tamanho} className="border-border/50 border-b">
+                <th scope="row" className="py-2 pr-4">
+                  {m.tamanho}
+                </th>
                 <td className="py-2 pr-4">{m.largura}</td>
                 <td className="py-2">{m.comprimento}</td>
               </tr>

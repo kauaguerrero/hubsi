@@ -40,7 +40,7 @@ export default async function EventoPage({ params }: PageProps<"/eventos/[slug]"
           <Badge tom="acento">{rotuloTipo[evento.tipo]}</Badge>
           {cancelado && <Badge tom="perigo">Cancelado</Badge>}
         </div>
-        <h1 className="text-5xl uppercase sm:text-6xl">{evento.titulo}</h1>
+        <h1 className="text-5xl sm:text-6xl">{evento.titulo}</h1>
         <p className="font-mono text-muted">
           {formatarDataHora(evento.inicio)}
           {evento.local ? ` · ${evento.local}` : ""}

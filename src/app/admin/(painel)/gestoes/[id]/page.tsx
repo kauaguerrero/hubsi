@@ -28,7 +28,7 @@ export default async function GestaoAdminPage({ params }: PageProps<"/admin/gest
 
   return (
     <div className="flex max-w-2xl flex-col gap-10">
-      <h1 className="text-5xl uppercase">{novo ? "Nova gestão" : `${gestao?.nome} ${gestao?.ano}`}</h1>
+      <h1 className="text-5xl">{novo ? "Nova gestão" : `${gestao?.nome} ${gestao?.ano}`}</h1>
 
       <FormAcao action={salvarGestao.bind(null, novo ? null : id)}>
         <Input id="nome" name="nome" label="Nome da chapa" defaultValue={gestao?.nome} required />

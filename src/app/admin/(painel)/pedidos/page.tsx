@@ -31,7 +31,7 @@ export default async function PedidosPage({ searchParams }: PageProps<"/admin/pe
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-5xl uppercase">Pedidos</h1>
+      <h1 className="text-5xl">Pedidos</h1>
 
       <form method="get" className="grid items-end gap-4 sm:grid-cols-[1fr_1fr_auto]">
         <Select id="lote" name="lote" label="Lote" defaultValue={lote}>

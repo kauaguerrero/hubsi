@@ -23,7 +23,7 @@ export default async function GestoesPage({ searchParams }: PageProps<"/admin/ge
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-5xl uppercase">Gestões</h1>
+        <h1 className="text-5xl">Gestões</h1>
         <ButtonLink href="/admin/gestoes/novo">Nova gestão</ButtonLink>
       </div>
       {typeof erro === "string" && ERROS[erro] && (

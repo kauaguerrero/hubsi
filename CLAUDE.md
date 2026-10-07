@@ -67,11 +67,11 @@ supabase/
 
 ## Identidade visual
 
-- Tema escuro. Tokens em `src/app/globals.css` (Tailwind `@theme`):
-  - `--color-bg: #0A1628`, `--color-surface: #1E3A5F`, texto branco e cinza-azulado.
-  - `--color-accent`: **uma única variável**, valor provisório `#22D3EE`. A cor final ainda não foi decidida (limão `#C6F432`, laranja `#FF6B35` ou ciano `#22D3EE`); trocar deve exigir mudar só essa linha.
-- Fontes via `next/font/google`: Barlow Condensed (títulos), Barlow (texto), JetBrains Mono (preços, labels).
-- Linguagem de circuito: trilhas SVG e nós circulares. Animações respeitam `prefers-reduced-motion`.
+- Tema **claro e moderno** (decisão de 2026-10: o azul-marinho escuro foi abandonado). Tokens em `src/app/globals.css` (Tailwind `@theme`):
+  - Fundo `--color-bg: #F8F8FC`, cartões `--color-surface: #FFFFFF`, texto `--color-fg: #12122A`, apoio `--color-muted`.
+  - Acento em degradê **ciano → violeta**: `--color-accent` (violeta, usado em texto/links/foco, AA sobre branco) e `--color-accent-2` (ciano). O degradê dos botões é o utilitário `bg-brand` (pontas escuras o bastante para texto branco). Texto sobre acento usa `text-on-accent`.
+- Fontes via `next/font/google`: Bricolage Grotesque (títulos, sem caixa alta), Inter (texto), JetBrains Mono (preços, labels).
+- Linguagem de circuito: trilhas SVG e nós circulares em degradê; hero com aurora (`AuroraBackground`), cartões com sombra suave e hover com elevação. Animações respeitam `prefers-reduced-motion`.
 - Mobile first. Nada pode gerar rolagem horizontal em 360 px. Contraste WCAG AA.
 - O estilo nunca atrapalha a compra: produto → pagamento em poucos toques.
 

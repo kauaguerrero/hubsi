@@ -6,11 +6,25 @@ import { Input } from "@/components/ui/field";
 import { consultarPedido, type EstadoForm } from "@/server/actions/pedidos";
 
 export function ConsultaPedidoForm() {
-  const [estado, formAction, pendente] = useActionState<EstadoForm, FormData>(consultarPedido, {});
+  const [estado, formAction, pendente] = useActionState<EstadoForm, FormData>(
+    consultarPedido,
+    {},
+  );
 
   return (
-    <form action={formAction} className="flex max-w-md flex-col gap-5" aria-busy={pendente}>
-      <Input id="email" name="email" type="email" label="E-mail usado no pedido" autoComplete="email" required />
+    <form
+      action={formAction}
+      className="flex max-w-md flex-col gap-5"
+      aria-busy={pendente}
+    >
+      <Input
+        id="email"
+        name="email"
+        type="email"
+        label="E-mail usado no pedido"
+        autoComplete="email"
+        required
+      />
       <Input
         id="codigo"
         name="codigo"
@@ -22,7 +36,10 @@ export function ConsultaPedidoForm() {
         className="font-mono uppercase"
       />
       {estado.erro && (
-        <p role="alert" className="rounded-lg border border-danger px-4 py-3 text-danger">
+        <p
+          role="alert"
+          className="border-danger text-danger rounded-lg border px-4 py-3"
+        >
           {estado.erro}
         </p>
       )}

@@ -14,7 +14,13 @@ type Props = {
 };
 
 /** Instruções de pagamento de um pedido aguardando: QR Pix, copia e cola e link de cartão. */
-export async function PagamentoPedido({ codigo, status, paymentId, invoiceUrl, aceitaCartao }: Props) {
+export async function PagamentoPedido({
+  codigo,
+  status,
+  paymentId,
+  invoiceUrl,
+  aceitaCartao,
+}: Props) {
   let qr: AsaasPixQrCode | null = null;
   if (paymentId) {
     try {
@@ -38,25 +44,37 @@ export async function PagamentoPedido({ codigo, status, paymentId, invoiceUrl, a
             alt="QR Code Pix para pagar o pedido"
             width={208}
             height={208}
-            className="rounded-lg bg-white p-2"
+            className="border-border rounded-xl border bg-white p-2"
           />
           <div className="w-full flex-1">
             <CopiarPix codigo={qr.payload} />
           </div>
         </div>
       ) : (
-        <p className="text-muted">Não foi possível exibir o QR Code agora. Use o link de pagamento abaixo.</p>
+        <p className="text-muted">
+          Não foi possível exibir o QR Code agora. Use o link de pagamento
+          abaixo.
+        </p>
       )}
 
       {invoiceUrl && (
         <div className="flex flex-col gap-2">
-          <ButtonLink href={invoiceUrl} target="_blank" rel="noopener noreferrer" variante={qr ? "secundario" : "primario"}>
-            {aceitaCartao ? "Pagar com cartão ou Pix" : "Abrir link de pagamento"}
+          <ButtonLink
+            href={invoiceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            variante={qr ? "secundario" : "primario"}
+          >
+            {aceitaCartao
+              ? "Pagar com cartão ou Pix"
+              : "Abrir link de pagamento"}
           </ButtonLink>
         </div>
       )}
 
-      <p className="text-sm text-muted">Esta página atualiza sozinha quando o pagamento for confirmado.</p>
+      <p className="text-muted text-sm">
+        Esta página atualiza sozinha quando o pagamento for confirmado.
+      </p>
     </Card>
   );
 }

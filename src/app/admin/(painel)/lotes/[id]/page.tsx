@@ -17,7 +17,7 @@ export default async function LotePage({ params }: PageProps<"/admin/lotes/[id]"
 
   return (
     <div className="flex max-w-2xl flex-col gap-6">
-      <h1 className="text-5xl uppercase">{novo ? "Novo lote" : lote?.nome}</h1>
+      <h1 className="text-5xl">{novo ? "Novo lote" : lote?.nome}</h1>
       <FormAcao action={salvarLote.bind(null, novo ? null : id)}>
         <Input id="nome" name="nome" label="Nome" defaultValue={lote?.nome} required />
         <Select id="status" name="status" label="Status" defaultValue={lote?.status ?? "aberto"}>

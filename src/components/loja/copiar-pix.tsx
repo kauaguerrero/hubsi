@@ -27,13 +27,15 @@ export function CopiarPix({ codigo }: { codigo: string }) {
         rows={3}
         value={codigo}
         onFocus={(e) => e.currentTarget.select()}
-        className="w-full rounded-lg border border-border bg-surface-2 p-3 font-mono text-xs break-all"
+        className="border-border bg-surface-2 w-full rounded-lg border p-3 font-mono text-xs break-all"
       />
       <Button variante="secundario" onClick={copiar}>
         {estado === "copiado" ? "Copiado!" : "Copiar código Pix"}
       </Button>
-      <p aria-live="polite" className="text-sm text-danger">
-        {estado === "erro" ? "Não foi possível copiar. Selecione o texto e copie manualmente." : ""}
+      <p aria-live="polite" className="text-danger text-sm">
+        {estado === "erro"
+          ? "Não foi possível copiar. Selecione o texto e copie manualmente."
+          : ""}
       </p>
     </div>
   );

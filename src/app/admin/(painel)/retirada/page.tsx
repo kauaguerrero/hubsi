@@ -27,7 +27,7 @@ export default async function RetiradaPage({ searchParams }: PageProps<"/admin/r
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-5xl uppercase">Retirada</h1>
+      <h1 className="text-5xl">Retirada</h1>
 
       <form method="get" className="grid items-end gap-4 sm:grid-cols-[1fr_auto]">
         <Select id="lote" name="lote" label="Lote" defaultValue={loteId}>

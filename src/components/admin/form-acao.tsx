@@ -17,7 +17,13 @@ type Props = {
  * Formulário que chama uma server action manualmente (sem `action=` do form), para
  * NÃO resetar os campos quando há erro de validação.
  */
-export function FormAcao({ action, children, rotulo = "Salvar", className, limparAoSalvar }: Props) {
+export function FormAcao({
+  action,
+  children,
+  rotulo = "Salvar",
+  className,
+  limparAoSalvar,
+}: Props) {
   const [estado, setEstado] = useState<EstadoForm>({});
   const [pendente, iniciar] = useTransition();
 
@@ -33,10 +39,17 @@ export function FormAcao({ action, children, rotulo = "Salvar", className, limpa
   }
 
   return (
-    <form onSubmit={aoEnviar} className={className ?? "flex flex-col gap-4"} aria-busy={pendente}>
+    <form
+      onSubmit={aoEnviar}
+      className={className ?? "flex flex-col gap-4"}
+      aria-busy={pendente}
+    >
       {children}
       {estado.erro && (
-        <p role="alert" className="rounded-lg border border-danger px-4 py-3 text-danger">
+        <p
+          role="alert"
+          className="border-danger text-danger rounded-lg border px-4 py-3"
+        >
           {estado.erro}
         </p>
       )}

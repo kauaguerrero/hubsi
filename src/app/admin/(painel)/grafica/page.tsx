@@ -15,7 +15,7 @@ export default async function GraficaPage({ searchParams }: PageProps<"/admin/gr
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-5xl uppercase">Resumo da gráfica</h1>
+      <h1 className="text-5xl">Resumo da gráfica</h1>
       <form method="get" className="grid items-end gap-4 sm:grid-cols-[1fr_auto]">
         <Select id="lote" name="lote" label="Lote" defaultValue={loteId}>
           {(lotes ?? []).map((l) => (

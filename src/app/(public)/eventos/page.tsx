@@ -17,7 +17,7 @@ export default async function EventosPage() {
 
   return (
     <div className="flex flex-col gap-12">
-      <h1 className="text-5xl uppercase sm:text-6xl">Eventos</h1>
+      <h1 className="text-5xl sm:text-6xl">Eventos</h1>
 
       <section aria-labelledby="proximos" className="flex flex-col gap-4">
         <h2 id="proximos" className="text-3xl">

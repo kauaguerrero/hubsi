@@ -16,7 +16,7 @@ export default async function LojaPage() {
     const ultimo = await getUltimoLote();
     return (
       <div className="flex flex-col gap-8">
-        <h1 className="text-5xl uppercase sm:text-6xl">Loja</h1>
+        <h1 className="text-5xl sm:text-6xl">Loja</h1>
         <EmptyState
           titulo="Pré-venda encerrada por enquanto"
           descricao={
@@ -34,7 +34,7 @@ export default async function LojaPage() {
   return (
     <div className="flex flex-col gap-8">
       <header className="flex flex-col gap-3">
-        <h1 className="text-5xl uppercase sm:text-6xl">Loja</h1>
+        <h1 className="text-5xl sm:text-6xl">Loja</h1>
         <div className="flex flex-wrap items-center gap-3">
           <Badge tom="acento">{lote.nome}</Badge>
           <p className="font-mono text-sm text-muted">Pedidos até {formatarDataHora(lote.fecha_em)}</p>

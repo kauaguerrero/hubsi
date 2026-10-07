@@ -12,7 +12,7 @@ export default async function HubPage() {
 
   return (
     <div className="flex flex-col gap-10">
-      <h1 className="text-5xl uppercase sm:text-6xl">Hub</h1>
+      <h1 className="text-5xl sm:text-6xl">Hub</h1>
       {grupos.length === 0 && <EmptyState titulo="Nenhum link por aqui ainda" />}
       {grupos.map(([categoria, links]) => (
         <section key={categoria} aria-labelledby={`cat-${categoria}`} className="flex flex-col gap-3">

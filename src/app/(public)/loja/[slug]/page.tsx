@@ -42,7 +42,7 @@ export default async function ProdutoPage({ params }: PageProps<"/loja/[slug]">)
       <div className="flex flex-col gap-6">
         <header className="flex flex-col gap-3">
           <Badge className="w-fit capitalize">{produto.categoria}</Badge>
-          <h1 className="text-5xl uppercase sm:text-6xl">{produto.nome}</h1>
+          <h1 className="text-5xl sm:text-6xl">{produto.nome}</h1>
           <p className="font-mono text-3xl">{formatarBRL(produto.preco_centavos)}</p>
           <p className="font-mono text-sm text-muted">
             {lote.nome} · {aberto ? `pedidos até ${formatarDataHora(lote.fecha_em)}` : "pedidos encerrados"}

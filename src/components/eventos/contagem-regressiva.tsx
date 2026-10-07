@@ -32,17 +32,24 @@ export function ContagemRegressiva({ alvo }: { alvo: string }) {
   ];
 
   if (t && t.total === 0) {
-    return <p className="font-mono text-accent">Está acontecendo agora!</p>;
+    return <p className="text-accent font-mono">Está acontecendo agora!</p>;
   }
 
   return (
-    <div role="timer" aria-label="Contagem regressiva para o evento" className="flex gap-3">
+    <div
+      role="timer"
+      aria-label="Contagem regressiva para o evento"
+      className="flex gap-3"
+    >
       {partes.map(([rotulo, valor]) => (
-        <div key={rotulo} className="flex min-w-14 flex-col items-center rounded-lg border border-border bg-surface-2 px-2 py-2">
-          <span className="font-mono text-2xl font-bold tabular-nums text-fg">
+        <div
+          key={rotulo}
+          className="border-border bg-surface shadow-card flex min-w-16 flex-col items-center rounded-2xl border px-3 py-2.5"
+        >
+          <span className="text-fg font-mono text-2xl font-bold tabular-nums">
             {valor === null ? "--" : String(valor).padStart(2, "0")}
           </span>
-          <span className="font-mono text-xs text-muted">{rotulo}</span>
+          <span className="text-muted font-mono text-xs">{rotulo}</span>
         </div>
       ))}
     </div>

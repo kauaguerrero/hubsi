@@ -33,16 +33,16 @@ export function templateConfirmacao(d: DadosConfirmacao): { html: string; texto:
     : null;
 
   const html = `<!doctype html>
-<html lang="pt-BR"><body style="margin:0;background:#0a1628;font-family:Arial,sans-serif;color:#ffffff">
+<html lang="pt-BR"><body style="margin:0;background:#f8f8fc;font-family:Arial,sans-serif;color:#12122a">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:24px">
-<table role="presentation" width="100%" style="max-width:560px;background:#1e3a5f;border-radius:12px;padding:24px">
+<table role="presentation" width="100%" style="max-width:560px;background:#ffffff;border:1px solid #e4e4f1;border-radius:16px;padding:28px">
 <tr><td>
-<p style="margin:0 0 4px;font-size:14px;color:#9fb3c8">HUB S.I.</p>
+<p style="margin:0 0 4px;font-size:14px;font-weight:bold;color:#7c3aed">HUB S.I.</p>
 <h1 style="margin:0 0 16px;font-size:24px">Pagamento confirmado!</h1>
 <p>Olá, ${escaparHtml(d.nome)}. Recebemos o pagamento do seu pedido.</p>
-<p style="font-size:14px;color:#9fb3c8;margin-bottom:4px">Código do pedido</p>
+<p style="font-size:14px;color:#55587a;margin-bottom:4px">Código do pedido</p>
 <p style="font-family:monospace;font-size:28px;margin:0 0 16px">${escaparHtml(d.codigo)}</p>
-<table role="presentation" width="100%" style="border-top:1px solid #2d4a73;border-bottom:1px solid #2d4a73;margin:16px 0">
+<table role="presentation" width="100%" style="border-top:1px solid #e4e4f1;border-bottom:1px solid #e4e4f1;margin:16px 0">
 ${linhas
   .map(
     (l) =>
@@ -52,7 +52,7 @@ ${linhas
 <tr><td style="padding:8px 0"><strong>Total</strong></td><td align="right" style="padding:8px 0;font-family:monospace"><strong>${escaparHtml(formatarBRL(d.totalCentavos))}</strong></td></tr>
 </table>
 ${retirada ? `<p><strong>Retirada:</strong> ${escaparHtml(retirada)}</p>` : `<p>Avisaremos quando o pedido estiver disponível para retirada.</p>`}
-<p><a href="${escaparHtml(d.urlPedido)}" style="color:#22d3ee">Acompanhar pedido</a></p>
+<p><a href="${escaparHtml(d.urlPedido)}" style="color:#7c3aed;font-weight:bold">Acompanhar pedido</a></p>
 </td></tr></table>
 </td></tr></table></body></html>`;
 

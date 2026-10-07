@@ -38,7 +38,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <h1 className="text-5xl uppercase">Painel</h1>
+      <h1 className="text-5xl">Painel</h1>
 
       {lote ? (
         <section aria-labelledby="lote" className="flex flex-col gap-4">

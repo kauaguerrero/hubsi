@@ -7,7 +7,11 @@ import type { EstadoForm } from "@/server/actions/pedidos";
 
 const TIPOS = ["image/jpeg", "image/png", "image/webp"];
 const MAX_BYTES = 5 * 1024 * 1024;
-const EXT: Record<string, string> = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" };
+const EXT: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+};
 
 type Props = {
   bucket: "produtos" | "eventos" | "gestoes";
@@ -22,19 +26,25 @@ type Props = {
 export function UploadImagem({ bucket, pasta, rotulo, aoEnviar }: Props) {
   const id = useId();
   const router = useRouter();
-  const [msg, setMsg] = useState<{ tipo: "erro" | "ok"; texto: string } | null>(null);
+  const [msg, setMsg] = useState<{ tipo: "erro" | "ok"; texto: string } | null>(
+    null,
+  );
   const [enviando, setEnviando] = useState(false);
 
   async function aoEscolher(arquivo: File | undefined) {
     if (!arquivo) return;
-    if (!TIPOS.includes(arquivo.type)) return setMsg({ tipo: "erro", texto: "Use JPG, PNG ou WebP." });
-    if (arquivo.size > MAX_BYTES) return setMsg({ tipo: "erro", texto: "A imagem deve ter até 5 MB." });
+    if (!TIPOS.includes(arquivo.type))
+      return setMsg({ tipo: "erro", texto: "Use JPG, PNG ou WebP." });
+    if (arquivo.size > MAX_BYTES)
+      return setMsg({ tipo: "erro", texto: "A imagem deve ter até 5 MB." });
 
     setEnviando(true);
     setMsg(null);
     const supabase = createClient();
     const caminho = `${pasta}/${crypto.randomUUID()}.${EXT[arquivo.type]}`;
-    const { error } = await supabase.storage.from(bucket).upload(caminho, arquivo, { contentType: arquivo.type });
+    const { error } = await supabase.storage
+      .from(bucket)
+      .upload(caminho, arquivo, { contentType: arquivo.type });
     if (error) {
       setEnviando(false);
       return setMsg({ tipo: "erro", texto: "Falha no envio da imagem." });
@@ -61,9 +71,14 @@ export function UploadImagem({ bucket, pasta, rotulo, aoEnviar }: Props) {
           void aoEscolher(e.target.files?.[0]);
           e.target.value = "";
         }}
-        className="min-h-11 text-sm file:mr-3 file:min-h-11 file:rounded-lg file:border file:border-border file:bg-surface file:px-4 file:text-fg"
+        className="file:border-border file:bg-surface file:text-fg min-h-11 text-sm file:mr-3 file:min-h-11 file:rounded-lg file:border file:px-4"
       />
-      <p aria-live="polite" className={msg?.tipo === "erro" ? "text-sm text-danger" : "text-sm text-success"}>
+      <p
+        aria-live="polite"
+        className={
+          msg?.tipo === "erro" ? "text-danger text-sm" : "text-success text-sm"
+        }
+      >
         {enviando ? "Enviando…" : (msg?.texto ?? "")}
       </p>
     </div>
