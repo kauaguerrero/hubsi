@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { Organograma } from "@/components/sobre/organograma";
 import { Badge, Card } from "@/components/ui/display";
 import { listarGestoes, type GestaoComMembros } from "@/server/queries/gestoes";
 
 export const metadata: Metadata = {
   title: "Sobre",
-  description: "O que o D.A. de Sistemas de Informação da FAFRAM faz e quem faz parte da gestão.",
+  description:
+    "O que o D.A. de Sistemas de Informação da FAFRAM faz e quem faz parte da gestão.",
 };
 
 function Membros({ gestao }: { gestao: GestaoComMembros }) {
@@ -16,15 +18,24 @@ function Membros({ gestao }: { gestao: GestaoComMembros }) {
         <li key={m.id}>
           <Card className="flex items-center gap-4">
             {m.foto_url ? (
-              <Image src={m.foto_url} alt={m.nome} width={56} height={56} className="size-14 rounded-full object-cover" />
+              <Image
+                src={m.foto_url}
+                alt={m.nome}
+                width={56}
+                height={56}
+                className="size-14 rounded-full object-cover"
+              />
             ) : (
-              <span aria-hidden="true" className="flex size-14 items-center justify-center rounded-full bg-surface-2 font-display text-2xl">
+              <span
+                aria-hidden="true"
+                className="bg-surface-2 font-display flex size-14 items-center justify-center rounded-full text-2xl"
+              >
                 {m.nome.charAt(0)}
               </span>
             )}
             <div>
               <p className="font-display text-xl font-bold">{m.nome}</p>
-              <p className="text-sm text-muted">{m.cargo}</p>
+              <p className="text-muted text-sm">{m.cargo}</p>
             </div>
           </Card>
         </li>
@@ -42,22 +53,28 @@ export default async function SobrePage() {
     <div className="flex flex-col gap-12">
       <header className="flex max-w-2xl flex-col gap-4">
         <h1 className="text-5xl sm:text-6xl">Sobre</h1>
-        <p className="text-lg text-muted">
-          O Diretório Acadêmico de Sistemas de Informação da FAFRAM representa os alunos do curso: organiza eventos,
-          conecta turmas, cuida da loja de produtos do curso e leva as demandas dos estudantes à coordenação.
+        <p className="text-muted text-lg">
+          O Diretório Acadêmico de Sistemas de Informação da FAFRAM representa
+          os alunos do curso: organiza eventos, conecta turmas, cuida da loja de
+          produtos do curso e leva as demandas dos estudantes à coordenação.
         </p>
       </header>
 
       {atual && (
-        <section aria-labelledby="gestao-atual" className="flex flex-col gap-4">
-          <div className="flex flex-wrap items-center gap-3">
-            <h2 id="gestao-atual" className="text-3xl">
-              Gestão {atual.nome} {atual.ano}
+        <section
+          aria-labelledby="gestao-atual"
+          className="bg-brand-soft border-accent/15 flex flex-col items-center gap-8 rounded-3xl border px-4 py-10 sm:px-10 sm:py-14"
+        >
+          <div className="flex flex-col items-center gap-3 text-center">
+            <Badge tom="acento">Gestão atual</Badge>
+            <h2 id="gestao-atual" className="text-4xl sm:text-5xl">
+              <span className="text-gradient">{atual.nome}</span> {atual.ano}
             </h2>
-            <Badge tom="acento">Atual</Badge>
+            {atual.descricao && (
+              <p className="text-muted max-w-2xl">{atual.descricao}</p>
+            )}
           </div>
-          {atual.descricao && <p className="max-w-2xl text-muted">{atual.descricao}</p>}
-          <Membros gestao={atual} />
+          <Organograma membros={atual.membros_gestao} />
         </section>
       )}
 
@@ -69,9 +86,12 @@ export default async function SobrePage() {
           {anteriores.map((g) => (
             <div key={g.id} className="flex flex-col gap-3">
               <h3 className="text-2xl">
-                {g.nome} <span className="font-mono text-base text-muted">{g.ano}</span>
+                {g.nome}{" "}
+                <span className="text-muted font-mono text-base">{g.ano}</span>
               </h3>
-              {g.descricao && <p className="max-w-2xl text-muted">{g.descricao}</p>}
+              {g.descricao && (
+                <p className="text-muted max-w-2xl">{g.descricao}</p>
+              )}
               <Membros gestao={g} />
             </div>
           ))}

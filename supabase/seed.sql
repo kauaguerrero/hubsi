@@ -5,9 +5,12 @@ insert into public.gestoes (id, nome, slug, ano, descricao, ativa) values
    'Gestão 2026 do D.A. de Sistemas de Informação da FAFRAM.', true);
 
 insert into public.membros_gestao (gestao_id, nome, cargo, ordem) values
-  ('00000000-0000-4000-8000-000000000001', 'Membro Exemplo 1', 'Presidente', 1),
-  ('00000000-0000-4000-8000-000000000001', 'Membro Exemplo 2', 'Vice-presidente', 2),
-  ('00000000-0000-4000-8000-000000000001', 'Membro Exemplo 3', 'Tesoureiro', 3);
+  ('00000000-0000-4000-8000-000000000001', 'Sofia Araki', 'Presidente', 1),
+  ('00000000-0000-4000-8000-000000000001', 'Igor Cruz', 'Vice-Presidente', 2),
+  ('00000000-0000-4000-8000-000000000001', 'Kauã Guerrero', 'Secretário', 3),
+  ('00000000-0000-4000-8000-000000000001', 'Gabriel Mustafe', 'Vice-Secretário', 4),
+  ('00000000-0000-4000-8000-000000000001', 'Beatriz Belini', 'Tesoureira', 5),
+  ('00000000-0000-4000-8000-000000000001', 'Lucas Lima', 'Vice-Tesoureiro', 6);
 
 insert into public.lotes (id, gestao_id, nome, status, abre_em, fecha_em, local_retirada) values
   ('00000000-0000-4000-8000-000000000010', '00000000-0000-4000-8000-000000000001',
