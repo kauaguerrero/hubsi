@@ -1,26 +1,99 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Acento: ÚNICA variável. Candidatas: #C6F432 (limão), #FF6B35 (laranja), #22D3EE (ciano). */
+  --color-accent: #22d3ee;
+
+  --color-bg: #0a1628;
+  --color-surface: #1e3a5f;
+  --color-surface-2: #142a47;
+  --color-fg: #ffffff;
+  --color-muted: #9fb3c8;
+  --color-border: #2d4a73;
+  --color-danger: #ff7a7a;
+  --color-success: #4ade80;
+
+  --font-display: var(--font-barlow-condensed), "Arial Narrow", sans-serif;
+  --font-sans: var(--font-barlow), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  html {
+    background: var(--color-bg);
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 1.1;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-bg);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Trilha de circuito: "acende" ao carregar; estática com reduced-motion. */
+@keyframes trace-draw {
+  from {
+    stroke-dashoffset: var(--trace-len, 600);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes node-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.trace-path {
+  stroke-dasharray: var(--trace-len, 600);
+  stroke-dashoffset: 0;
+  animation: trace-draw 2.2s ease-out both;
+}
+
+.trace-node {
+  animation: node-pulse 3s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .trace-path {
+    animation: none;
+    stroke-dasharray: none;
+  }
+
+  .trace-node {
+    animation: none;
+  }
 }

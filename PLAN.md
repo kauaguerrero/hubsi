@@ -114,16 +114,16 @@ Se `SUPABASE_ACCESS_TOKEN` ou `SUPABASE_PROJECT_REF` faltar: escreva as migratio
 ## Fase 4 — Design system e layout
 
 **Tarefas**
-- [ ] Tokens no `globals.css` conforme `CLAUDE.md` (acento numa única variável)
-- [ ] Fontes com `next/font/google` no layout raiz
-- [ ] `components/ui`: Button (primário com acento, secundário, ghost), Input, Select, Textarea, Checkbox, Card, Badge, Skeleton, EmptyState
-- [ ] `components/brand`:
+- [x] Tokens no `globals.css` conforme `CLAUDE.md` (acento numa única variável)
+- [x] Fontes com `next/font/google` no layout raiz
+- [x] `components/ui`: Button (primário com acento, secundário, ghost), Input, Select, Textarea, Checkbox, Card, Badge, Skeleton, EmptyState
+- [x] `components/brand`:
   - `LogoHubSI` em SVG inline (wordmark "HUB S.I." em condensada + ícone de circuito com nós)
   - `CircuitTrace` (trilha SVG reutilizável, com animação de "acender" via CSS e fallback estático em `prefers-reduced-motion`)
   - `SeloGestao` (server component: busca a gestão ativa; sem gestão ativa, não renderiza nada)
-- [ ] `components/layout`: Header (desktop: logo, nav, selo à direita; mobile: logo + botão de menu, selo dentro do menu), MenuMobile, Footer (redes, contato, selo, link de privacidade)
-- [ ] Página `not-found.tsx` com tema `StackOverflowError` e stack trace falso, com link de volta
-- [ ] `console.log` de boas-vindas para quem abrir o DevTools (uma vez, no client, só em produção)
+- [x] `components/layout`: Header (desktop: logo, nav, selo à direita; mobile: logo + botão de menu, selo dentro do menu), MenuMobile, Footer (redes, contato, selo, link de privacidade)
+- [x] Página `not-found.tsx` com tema `StackOverflowError` e stack trace falso, com link de volta
+- [x] `console.log` de boas-vindas para quem abrir o DevTools (uma vez, no client, só em produção)
 
 **Validação:** `pnpm typecheck && pnpm lint && pnpm build`
 
