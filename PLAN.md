@@ -172,17 +172,17 @@ Se `SUPABASE_ACCESS_TOKEN` ou `SUPABASE_PROJECT_REF` faltar: escreva as migratio
 Se `ASAAS_API_KEY` faltar: implemente tudo com o client tipado, cubra com testes usando `fetch` mockado e registre o bloqueio.
 
 **Tarefas**
-- [ ] `src/lib/asaas/client.ts` (`server-only`): `fetch` para `ASAAS_BASE_URL`, header `access_token`, timeout, erros tipados sem vazar a chave
+- [x] `src/lib/asaas/client.ts` (`server-only`): `fetch` para `ASAAS_BASE_URL`, header `access_token`, timeout, erros tipados sem vazar a chave
   - `buscarClientePorCpf(cpf)` → `GET /customers?cpfCnpj=`
   - `criarCliente(dados)` → `POST /customers`
   - `criarCobranca({ customer, value, dueDate, billingType, externalReference, description })` → `POST /payments`
   - `obterQrCodePix(paymentId)` → `GET /payments/{id}/pixQrCode`
   - `cancelarCobranca(paymentId)` → `DELETE /payments/{id}`
   - Antes de escrever, confira os campos na documentação oficial atual do Asaas e ajuste os tipos.
-- [ ] Regras da cobrança: valor em reais (converter de centavos), `dueDate` = data de fechamento do lote, `externalReference` = `pedidos.id`, `billingType` = `UNDEFINED` se todos os produtos aceitam cartão, senão `PIX`
-- [ ] Ligar `criarPedido` à criação real da cobrança; gravar `asaas_customer_id` e `asaas_payment_id`; em falha do Asaas, marcar pedido como `cancelado` e mostrar erro amigável
-- [ ] `/pedido/[codigo]`: se aguardando, mostrar QR Pix (`qrcode.react` ou imagem base64 do Asaas) + copia-e-cola com botão copiar; se cartão permitido, botão para a `invoiceUrl`; polling leve (a cada 5 s, até 10 min) do status
-- [ ] `POST /api/webhooks/asaas`:
+- [x] Regras da cobrança: valor em reais (converter de centavos), `dueDate` = data de fechamento do lote, `externalReference` = `pedidos.id`, `billingType` = `UNDEFINED` se todos os produtos aceitam cartão, senão `PIX`
+- [x] Ligar `criarPedido` à criação real da cobrança; gravar `asaas_customer_id` e `asaas_payment_id`; em falha do Asaas, marcar pedido como `cancelado` e mostrar erro amigável
+- [x] `/pedido/[codigo]`: se aguardando, mostrar QR Pix (`qrcode.react` ou imagem base64 do Asaas) + copia-e-cola com botão copiar; se cartão permitido, botão para a `invoiceUrl`; polling leve (a cada 5 s, até 10 min) do status
+- [x] `POST /api/webhooks/asaas`:
   1. valida `asaas-access-token` com `crypto.timingSafeEqual`; inválido → 401
   2. insere em `webhook_eventos`; conflito de chave única → 200 sem efeito
   3. localiza pedido por `externalReference`
@@ -190,10 +190,10 @@ Se `ASAAS_API_KEY` faltar: implemente tudo com o client tipado, cubra com testes
   5. `PAYMENT_OVERDUE` → `expirado`; `PAYMENT_REFUNDED` → `estornado`
   6. transições inválidas (ex.: pago → expirado) ignoradas e registradas
   7. responde 200 rápido; erros internos → 500 para o Asaas reenviar
-- [ ] `src/lib/email/resend.ts` + template de confirmação (código, itens, valor, data/local de retirada se houver); sem `RESEND_API_KEY`, apenas loga em dev
-- [ ] `GET /api/cron/expirar-pedidos`: exige `Authorization: Bearer $CRON_SECRET`; cancela no Asaas e marca `expirado` os pedidos aguardando de lotes fechados
-- [ ] `vercel.json` com o cron diário
-- [ ] Testes do webhook: token ausente, token errado, evento repetido, pagamento confirmado, estorno, transição inválida, pedido inexistente
+- [x] `src/lib/email/resend.ts` + template de confirmação (código, itens, valor, data/local de retirada se houver); sem `RESEND_API_KEY`, apenas loga em dev
+- [x] `GET /api/cron/expirar-pedidos`: exige `Authorization: Bearer $CRON_SECRET`; cancela no Asaas e marca `expirado` os pedidos aguardando de lotes fechados
+- [x] `vercel.json` com o cron diário
+- [x] Testes do webhook: token ausente, token errado, evento repetido, pagamento confirmado, estorno, transição inválida, pedido inexistente
 
 **Validação:** `pnpm typecheck && pnpm lint && pnpm test && pnpm build`
 

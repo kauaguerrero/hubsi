@@ -9,8 +9,11 @@
 - **Fase 4:** tokens e fontes (Barlow/Barlow Condensed/JetBrains Mono), componentes ui e brand (logo, CircuitTrace, SeloGestao), Header/MenuMobile/Footer, layout público com revalidate 5 min, 404 StackOverflowError e console.log em produção. Build verde.
 - **Fase 5:** home (hero, próximo evento com contagem, produtos do lote), /eventos em trilha, /eventos/[slug] (+ .ics, Google Agenda, OG), /sobre, /hub, /privacidade. Smoke test em produção local: todas as rotas 200, 404 ok. 24 testes.
 - **Fase 6:** /loja, /loja/[slug] (galeria, variações, medidas, OG), carrinho, /checkout, server actions `criarPedido` (rate limit, preço do banco, cliente por CPF) e `consultarPedido`, /pedido/[codigo], /meus-pedidos. 36 testes (cálculo, lote fechado, preço manipulado, carrinho). Operações de banco validadas com script descartável.
+- **Fase 7:** client Asaas tipado (customers, payments, pixQrCode, DELETE), `criarCobranca` real ligada ao `criarPedido`, página do pedido com QR/copia-e-cola/link de cartão e polling, webhook idempotente com token em tempo constante, e-mail Resend (sem chave só loga em dev), cron de expiração + `vercel.json`. 62 testes (client, webhook, cron, e-mail). Sem validação no sandbox real (standby).
 
 ## Decisões
+
+- Asaas: auth pelo header `access_token` (+ `User-Agent`), `billingType` `UNDEFINED` (ou `PIX` se algum produto não aceita cartão), `notificationDisabled: true` no cliente (avisos saem do Hub S.I.). Webhook: se o processamento falha após registrar o evento, o registro é removido e responde 500 para o Asaas reenviar; falha de e-mail não gera 500. `PAYMENT_REFUNDED` só estorna pedidos pago/em_producao/disponivel.
 
 - Carrinho: store em módulo + `useSyncExternalStore` (`src/lib/carrinho-store.ts`, hook `use-carrinho.ts`), com `sessionStorage` em try/catch. `/pedido/[codigo]` usa `revalidate = 0` (o layout público tem 300).
 - `env.server.ts` separado por domínio (`getSupabaseServerEnv`, `getAsaasEnv`, `getEmailEnv`, `getCronEnv`) para a falta do Asaas não derrubar o resto.
@@ -30,7 +33,7 @@
 
 ## Bloqueios
 
-- **STANDBY — Asaas/e-mail/cron (retomar depois):** `.env.local` sem `ASAAS_API_KEY`, `ASAAS_WEBHOOK_TOKEN`, `RESEND_API_KEY`, `EMAIL_FROM` e `CRON_SECRET`. Fase 7 será implementada com `fetch` mockado (sem teste contra o sandbox real). Pendente para quando houver chaves: testar cobrança Pix/cartão no sandbox, configurar webhook no painel do Asaas (URL `/api/webhooks/asaas` + token), validar envio de e-mail e cron na Vercel, conferir campos da API do Asaas na documentação vigente.
+- **STANDBY — Asaas/e-mail/cron (retomar depois):** `.env.local` sem `ASAAS_API_KEY`, `ASAAS_WEBHOOK_TOKEN` (mín. 32 caracteres), `RESEND_API_KEY`, `EMAIL_FROM` e `CRON_SECRET`. A Fase 7 está implementada e testada só com `fetch`/repositórios mockados. Falta, quando houver chaves: (1) criar cobrança Pix e cartão no sandbox e conferir `invoiceUrl`/QR; (2) cadastrar o webhook no painel do Asaas (URL `/api/webhooks/asaas`, token = `ASAAS_WEBHOOK_TOKEN`, eventos de cobrança) e conferir o header `asaas-access-token`; (3) validar o e-mail no Resend (domínio/remetente); (4) configurar `CRON_SECRET` e as variáveis na Vercel e conferir o cron diário (`vercel.json`, 08:00 UTC); (5) conferir o payload real dos webhooks (campo `id` do evento).
 
 
 - `.env.local` não existe. Faltam todas as variáveis da Fase 0 (Supabase URL/keys/token/senha, Asaas, Resend, `CRON_SECRET`).

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { PagamentoPedido } from "@/components/loja/pagamento-pedido";
 import { LimparCarrinho } from "@/components/loja/limpar-carrinho";
 import { Badge, Card } from "@/components/ui/display";
 import { STATUS_PEDIDO } from "@/lib/pedidos/status";
@@ -69,9 +70,13 @@ export default async function PedidoPage({
       )}
 
       {pedido.status === "aguardando_pagamento" && (
-        <Card>
-          <p className="text-muted">Aguardando a confirmação do pagamento.</p>
-        </Card>
+        <PagamentoPedido
+          codigo={pedido.codigo}
+          status={pedido.status}
+          paymentId={pedido.asaas_payment_id}
+          invoiceUrl={pedido.invoice_url}
+          aceitaCartao={pedido.itens_pedido.every((i) => i.produtos?.aceita_cartao ?? true)}
+        />
       )}
     </div>
   );

@@ -8,7 +8,7 @@ const supabaseSchema = z.object({ SUPABASE_SERVICE_ROLE_KEY: z.string().min(1) }
 const asaasSchema = z.object({
   ASAAS_API_KEY: z.string().min(1),
   ASAAS_BASE_URL: z.url(),
-  ASAAS_WEBHOOK_TOKEN: z.string().min(16),
+  ASAAS_WEBHOOK_TOKEN: z.string().min(32),
 });
 const emailSchema = z.object({
   RESEND_API_KEY: z.string().min(1).optional(),

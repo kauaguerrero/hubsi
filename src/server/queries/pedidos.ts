@@ -13,7 +13,7 @@ export async function getPedidoPublico(codigoBruto: string) {
     .select(
       `id, codigo, status, forma_pagamento, total_centavos, invoice_url, asaas_payment_id, created_at, pago_em,
        lotes(nome, fecha_em, local_retirada, data_retirada),
-       itens_pedido(id, quantidade, preco_unitario, produtos(nome), variacoes(tamanho, cor))`,
+       itens_pedido(id, quantidade, preco_unitario, produtos(nome, aceita_cartao), variacoes(tamanho, cor))`,
     )
     .eq("codigo", codigo)
     .maybeSingle();
