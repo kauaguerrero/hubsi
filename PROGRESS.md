@@ -10,8 +10,13 @@
 - **Fase 5:** home (hero, próximo evento com contagem, produtos do lote), /eventos em trilha, /eventos/[slug] (+ .ics, Google Agenda, OG), /sobre, /hub, /privacidade. Smoke test em produção local: todas as rotas 200, 404 ok. 24 testes.
 - **Fase 6:** /loja, /loja/[slug] (galeria, variações, medidas, OG), carrinho, /checkout, server actions `criarPedido` (rate limit, preço do banco, cliente por CPF) e `consultarPedido`, /pedido/[codigo], /meus-pedidos. 36 testes (cálculo, lote fechado, preço manipulado, carrinho). Operações de banco validadas com script descartável.
 - **Fase 7:** client Asaas tipado (customers, payments, pixQrCode, DELETE), `criarCobranca` real ligada ao `criarPedido`, página do pedido com QR/copia-e-cola/link de cartão e polling, webhook idempotente com token em tempo constante, e-mail Resend (sem chave só loga em dev), cron de expiração + `vercel.json`. 62 testes (client, webhook, cron, e-mail). Sem validação no sandbox real (standby).
+- **Fase 8:** painel completo: login por link mágico + proxy, layout (nav lateral/inferior), dashboard, lotes, produtos (fotos, variações), pedidos (ações e cancelamento no Asaas), retirada, resumo/CSV da gráfica sem CPF, eventos/palestrantes, hub, gestões (membros, logo, tornar atual), usuários (convite, papel, remoção com trava do último superadmin), log_acoes, script criar-superadmin. 86 testes + `scripts/check-rls-papeis.mts` (24 checks de RLS por papel no banco real, todos ok).
 
 ## Decisões
+
+- Admin: `src/proxy.ts` (Next 16) exige sessão em `/admin/*`; o papel é checado por `requireRole` em cada página/action (RLS é a barreira real). Formulários usam `FormAcao` (chama a action manualmente para não resetar campos em erro). Uploads de imagem vão do navegador direto ao Storage (sessão do admin) e a action só grava a URL após validar o prefixo do bucket. Datas do painel são em horário de Brasília (offset fixo -03:00). Remover variação já vendida apenas a desativa.
+- **Config manual no Supabase (Auth) para o login funcionar:** Site URL e Redirect URLs com `<SITE>/auth/callback`; nos templates de e-mail (Magic Link e Invite user) usar `{{ .SiteURL }}/auth/callback?token_hash={{ .TokenHash }}&type=magiclink` (invite: `type=invite`). Ver README (Fase 9).
+- Primeiro acesso: `pnpm tsx --env-file=.env.local scripts/criar-superadmin.mts <email> "Nome"`.
 
 - Asaas: auth pelo header `access_token` (+ `User-Agent`), `billingType` `UNDEFINED` (ou `PIX` se algum produto não aceita cartão), `notificationDisabled: true` no cliente (avisos saem do Hub S.I.). Webhook: se o processamento falha após registrar o evento, o registro é removido e responde 500 para o Asaas reenviar; falha de e-mail não gera 500. `PAYMENT_REFUNDED` só estorna pedidos pago/em_producao/disponivel.
 

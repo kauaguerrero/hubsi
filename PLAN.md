@@ -202,22 +202,22 @@ Se `ASAAS_API_KEY` faltar: implemente tudo com o client tipado, cubra com testes
 ## Fase 8 — Painel admin
 
 **Tarefas**
-- [ ] `/admin/login`: link mágico do Supabase Auth; só e-mails com registro em `perfis_admin` acessam (demais recebem mensagem genérica)
-- [ ] Proteção das rotas `/admin/(painel)` no middleware/proxy (conforme a versão do Next) + `requireRole` em cada página e action
-- [ ] Layout do painel: navegação lateral no desktop, inferior no mobile; mostra nome e papel
-- [ ] Dashboard: lote ativo, arrecadado, pagos vs pendentes, próximo evento
-- [ ] Lotes: CRUD, mudança de status
-- [ ] Produtos: CRUD com upload de fotos (Storage), variações, preço, aceita cartão, vínculo ao lote
-- [ ] Pedidos: lista filtrável por lote/status, detalhe com dados do cliente, ações "marcar disponível", "marcar retirado", "cancelar" (só não pagos; cancela no Asaas também)
-- [ ] Resumo da gráfica: quantidade por produto/variação dos pedidos pagos; exportar CSV **sem CPF**
-- [ ] Lista de retirada: pagos/disponíveis do lote em ordem alfabética, botão grande "retirado", pensada para celular
-- [ ] Eventos e palestrantes: CRUD com rascunho/publicação e upload de capa
-- [ ] Hub: CRUD de links com ordenação
-- [ ] Gestões: CRUD, membros, upload de logos; botão "Tornar gestão atual" chamando `ativar_gestao` (só superadmin) e revalidando o layout
-- [ ] Usuários (só superadmin): convidar por e-mail (`auth.admin.inviteUserByEmail` via service role), mudar papel, remover; impedir remover o último superadmin
-- [ ] `log_acoes` gravado em toda ação de pedidos, lotes, gestões e usuários
-- [ ] Script `scripts/criar-superadmin.ts` (rodado manualmente com e-mail como argumento) para o primeiro acesso
-- [ ] Testes: `requireRole` por papel, editor sem acesso a pedidos, bloqueio de remover último superadmin
+- [x] `/admin/login`: link mágico do Supabase Auth; só e-mails com registro em `perfis_admin` acessam (demais recebem mensagem genérica)
+- [x] Proteção das rotas `/admin/(painel)` no middleware/proxy (conforme a versão do Next) + `requireRole` em cada página e action
+- [x] Layout do painel: navegação lateral no desktop, inferior no mobile; mostra nome e papel
+- [x] Dashboard: lote ativo, arrecadado, pagos vs pendentes, próximo evento
+- [x] Lotes: CRUD, mudança de status
+- [x] Produtos: CRUD com upload de fotos (Storage), variações, preço, aceita cartão, vínculo ao lote
+- [x] Pedidos: lista filtrável por lote/status, detalhe com dados do cliente, ações "marcar disponível", "marcar retirado", "cancelar" (só não pagos; cancela no Asaas também)
+- [x] Resumo da gráfica: quantidade por produto/variação dos pedidos pagos; exportar CSV **sem CPF**
+- [x] Lista de retirada: pagos/disponíveis do lote em ordem alfabética, botão grande "retirado", pensada para celular
+- [x] Eventos e palestrantes: CRUD com rascunho/publicação e upload de capa
+- [x] Hub: CRUD de links com ordenação
+- [x] Gestões: CRUD, membros, upload de logos; botão "Tornar gestão atual" chamando `ativar_gestao` (só superadmin) e revalidando o layout
+- [x] Usuários (só superadmin): convidar por e-mail (`auth.admin.inviteUserByEmail` via service role), mudar papel, remover; impedir remover o último superadmin
+- [x] `log_acoes` gravado em toda ação de pedidos, lotes, gestões e usuários
+- [x] Script `scripts/criar-superadmin.ts` (rodado manualmente com e-mail como argumento) para o primeiro acesso
+- [x] Testes: `requireRole` por papel, editor sem acesso a pedidos, bloqueio de remover último superadmin
 
 **Validação:** `pnpm typecheck && pnpm lint && pnpm test && pnpm build`
 

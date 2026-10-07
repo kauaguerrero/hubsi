@@ -11,7 +11,7 @@ import { normalizarCodigoPedido, codigoPedidoValido } from "@/lib/utils/codigo-p
 import { pedidoSchema } from "@/lib/validators/schemas";
 import { montarPedido } from "@/server/pedidos/calculo";
 
-export type EstadoForm = { erro?: string; campos?: Record<string, string[] | undefined> };
+export type EstadoForm = { erro?: string; ok?: string; campos?: Record<string, string[] | undefined> };
 
 const campo = (fd: FormData, nome: string) => String(fd.get(nome) ?? "");
 
