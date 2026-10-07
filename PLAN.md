@@ -148,20 +148,20 @@ Se `SUPABASE_ACCESS_TOKEN` ou `SUPABASE_PROJECT_REF` faltar: escreva as migratio
 ## Fase 6 — Loja e checkout (sem chamar o Asaas ainda)
 
 **Tarefas**
-- [ ] `/loja`: lote aberto, catálogo filtrável por categoria; lote fechado mostra aviso e esconde compra
-- [ ] `/loja/[slug]`: galeria, seleção de variação, tabela de medidas (camisa), prazo do lote, botão adicionar
-- [ ] Carrinho client-side (React context + `sessionStorage` com try/catch), restrito a itens do mesmo lote
-- [ ] `/checkout`: formulário com validação Zod no client e no server; aceite do aviso de privacidade obrigatório
-- [ ] Server action `criarPedido`:
+- [x] `/loja`: lote aberto, catálogo filtrável por categoria; lote fechado mostra aviso e esconde compra
+- [x] `/loja/[slug]`: galeria, seleção de variação, tabela de medidas (camisa), prazo do lote, botão adicionar
+- [x] Carrinho client-side (React context + `sessionStorage` com try/catch), restrito a itens do mesmo lote
+- [x] `/checkout`: formulário com validação Zod no client e no server; aceite do aviso de privacidade obrigatório
+- [x] Server action `criarPedido`:
   1. `checar_rate_limit` por IP (ex.: 5 pedidos / 10 min)
   2. valida lote aberto e limite de unidades
   3. recalcula preços a partir do banco
   4. upsert de `clientes` por CPF, cria `pedidos` + `itens_pedido` com status `aguardando_pagamento`
   5. chama `criarCobranca(pedido)` (Fase 7); até lá, stub que lança erro controlado
   6. redireciona para `/pedido/[codigo]`
-- [ ] `/pedido/[codigo]`: dados públicos mínimos (itens, valor, status), sem CPF
-- [ ] `/meus-pedidos`: formulário e-mail + código; consulta via service role retornando só os campos públicos; rate limit
-- [ ] Testes: cálculo de total, rejeição de lote fechado, rejeição de preço manipulado
+- [x] `/pedido/[codigo]`: dados públicos mínimos (itens, valor, status), sem CPF
+- [x] `/meus-pedidos`: formulário e-mail + código; consulta via service role retornando só os campos públicos; rate limit
+- [x] Testes: cálculo de total, rejeição de lote fechado, rejeição de preço manipulado
 
 **Validação:** `pnpm typecheck && pnpm lint && pnpm test && pnpm build`
 

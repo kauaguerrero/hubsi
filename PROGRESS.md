@@ -8,8 +8,14 @@
 - **Fase 3:** clients Supabase (server/client/admin), validadores (CPF, Zod), utilitários (money, datas, código de pedido), `requireRole`. 20 testes verdes.
 - **Fase 4:** tokens e fontes (Barlow/Barlow Condensed/JetBrains Mono), componentes ui e brand (logo, CircuitTrace, SeloGestao), Header/MenuMobile/Footer, layout público com revalidate 5 min, 404 StackOverflowError e console.log em produção. Build verde.
 - **Fase 5:** home (hero, próximo evento com contagem, produtos do lote), /eventos em trilha, /eventos/[slug] (+ .ics, Google Agenda, OG), /sobre, /hub, /privacidade. Smoke test em produção local: todas as rotas 200, 404 ok. 24 testes.
+- **Fase 6:** /loja, /loja/[slug] (galeria, variações, medidas, OG), carrinho, /checkout, server actions `criarPedido` (rate limit, preço do banco, cliente por CPF) e `consultarPedido`, /pedido/[codigo], /meus-pedidos. 36 testes (cálculo, lote fechado, preço manipulado, carrinho). Operações de banco validadas com script descartável.
 
 ## Decisões
+
+- Carrinho: store em módulo + `useSyncExternalStore` (`src/lib/carrinho-store.ts`, hook `use-carrinho.ts`), com `sessionStorage` em try/catch. `/pedido/[codigo]` usa `revalidate = 0` (o layout público tem 300).
+- `env.server.ts` separado por domínio (`getSupabaseServerEnv`, `getAsaasEnv`, `getEmailEnv`, `getCronEnv`) para a falta do Asaas não derrubar o resto.
+- Com o stub do Asaas, `criarPedido` cancela o pedido e mostra "pagamento ainda não disponível" (comportamento definitivo de falha previsto na Fase 7). Limite de unidades do lote é checado sem lock: corrida possível em compras simultâneas no limite (aceito no MVP).
+- **A confirmar com o D.A.:** medidas da tabela de camisa (`tabela-medidas.tsx`) são valores de referência.
 
 - OG dinâmica: feita para eventos na Fase 5; a de produto entra na Fase 6 junto com `/loja/[slug]`. `next.config.ts` libera `*.supabase.co` para `next/image`. Revalidação: `revalidate = 300` no layout público; as actions do admin (Fase 8) devem chamar `revalidatePath("/", "layout")`.
 

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { LogoHubSI } from "@/components/brand/logo-hub-si";
 import { SeloGestao } from "@/components/brand/selo-gestao";
+import { CarrinhoBadge } from "@/components/loja/carrinho-badge";
 import { MenuMobile } from "./menu-mobile";
 import { NAV_LINKS } from "./nav-links";
 
@@ -31,7 +32,10 @@ export function Header() {
           <SeloGestao />
         </div>
 
-        <MenuMobile selo={<SeloGestao />} />
+        <div className="flex items-center gap-2">
+          <CarrinhoBadge />
+          <MenuMobile selo={<SeloGestao />} />
+        </div>
       </div>
     </header>
   );
