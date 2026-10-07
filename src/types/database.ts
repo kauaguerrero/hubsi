@@ -342,6 +342,7 @@ export type Database = {
           id: string
           nome: string
           ordem: number
+          superior_id: string | null
           updated_at: string
         }
         Insert: {
@@ -352,6 +353,7 @@ export type Database = {
           id?: string
           nome: string
           ordem?: number
+          superior_id?: string | null
           updated_at?: string
         }
         Update: {
@@ -362,6 +364,7 @@ export type Database = {
           id?: string
           nome?: string
           ordem?: number
+          superior_id?: string | null
           updated_at?: string
         }
         Relationships: [
@@ -370,6 +373,13 @@ export type Database = {
             columns: ["gestao_id"]
             isOneToOne: false
             referencedRelation: "gestoes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "membros_gestao_superior_id_fkey"
+            columns: ["superior_id"]
+            isOneToOne: false
+            referencedRelation: "membros_gestao"
             referencedColumns: ["id"]
           },
         ]

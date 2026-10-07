@@ -1,48 +1,13 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { Organograma } from "@/components/sobre/organograma";
-import { Badge, Card } from "@/components/ui/display";
-import { listarGestoes, type GestaoComMembros } from "@/server/queries/gestoes";
+import { Badge } from "@/components/ui/display";
+import { listarGestoes } from "@/server/queries/gestoes";
 
 export const metadata: Metadata = {
   title: "Sobre",
   description:
     "O que o D.A. de Sistemas de Informação da FAFRAM faz e quem faz parte da gestão.",
 };
-
-function Membros({ gestao }: { gestao: GestaoComMembros }) {
-  if (!gestao.membros_gestao.length) return null;
-  return (
-    <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {gestao.membros_gestao.map((m) => (
-        <li key={m.id}>
-          <Card className="flex items-center gap-4">
-            {m.foto_url ? (
-              <Image
-                src={m.foto_url}
-                alt={m.nome}
-                width={56}
-                height={56}
-                className="size-14 rounded-full object-cover"
-              />
-            ) : (
-              <span
-                aria-hidden="true"
-                className="bg-surface-2 font-display flex size-14 items-center justify-center rounded-full text-2xl"
-              >
-                {m.nome.charAt(0)}
-              </span>
-            )}
-            <div>
-              <p className="font-display text-xl font-bold">{m.nome}</p>
-              <p className="text-muted text-sm">{m.cargo}</p>
-            </div>
-          </Card>
-        </li>
-      ))}
-    </ul>
-  );
-}
 
 export default async function SobrePage() {
   const gestoes = await listarGestoes();
@@ -84,7 +49,10 @@ export default async function SobrePage() {
             Gestões anteriores
           </h2>
           {anteriores.map((g) => (
-            <div key={g.id} className="flex flex-col gap-3">
+            <div
+              key={g.id}
+              className="border-border bg-surface shadow-card flex flex-col gap-4 rounded-3xl border p-6"
+            >
               <h3 className="text-2xl">
                 {g.nome}{" "}
                 <span className="text-muted font-mono text-base">{g.ano}</span>
@@ -92,7 +60,7 @@ export default async function SobrePage() {
               {g.descricao && (
                 <p className="text-muted max-w-2xl">{g.descricao}</p>
               )}
-              <Membros gestao={g} />
+              <Organograma membros={g.membros_gestao} />
             </div>
           ))}
         </section>

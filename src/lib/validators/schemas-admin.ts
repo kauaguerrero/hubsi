@@ -33,6 +33,8 @@ export const membroSchema = z.object({
   nome: texto(120),
   cargo: texto(80),
   ordem: z.number().int().min(0).max(9999),
+  /** Quem fica acima na hierarquia do organograma (null = topo). */
+  superiorId: z.uuid().nullable(),
 });
 
 export const conviteUsuarioSchema = z.object({

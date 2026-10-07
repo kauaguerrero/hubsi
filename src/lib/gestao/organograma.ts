@@ -4,6 +4,8 @@ export type MembroOrg = {
   cargo: string;
   foto_url: string | null;
   ordem: number;
+  /** Quem está acima na hierarquia (null = topo). */
+  superior_id: string | null;
 };
 
 export type Organograma = {
@@ -44,7 +46,7 @@ function vagaDoCargo(cargo: string): Vaga | null {
   return null;
 }
 
-/** Organiza os membros da gestão na hierarquia presidente → vice → secretaria/tesouraria. */
+/** Reconhece os cargos padrão de um D.A. (presidente, vice, secretaria, tesouraria). */
 export function montarOrganograma(membros: MembroOrg[]): Organograma {
   const org: Organograma = { secretaria: {}, tesouraria: {}, outros: [] };
 
@@ -81,4 +83,30 @@ export function temEstrutura(org: Organograma): boolean {
     org.tesouraria.titular ||
     org.tesouraria.vice
   );
+}
+
+/**
+ * Hierarquia sugerida a partir dos cargos: presidente no topo → vice → secretaria e
+ * tesouraria (titular → vice). Cargos desconhecidos ficam abaixo do presidente.
+ * Devolve `membroId → superiorId` (null = topo).
+ */
+export function superioresPadrao(
+  membros: MembroOrg[],
+): Map<string, string | null> {
+  const o = montarOrganograma(membros);
+  const topo = o.presidente?.id ?? null;
+  const abaixoDoTopo = o.vicePresidente?.id ?? topo;
+  const resultado = new Map<string, string | null>();
+
+  const definir = (m: MembroOrg | undefined, superior: string | null) =>
+    m && resultado.set(m.id, superior);
+  definir(o.presidente, null);
+  definir(o.vicePresidente, topo);
+  definir(o.secretaria.titular, abaixoDoTopo);
+  definir(o.tesouraria.titular, abaixoDoTopo);
+  definir(o.secretaria.vice, o.secretaria.titular?.id ?? abaixoDoTopo);
+  definir(o.tesouraria.vice, o.tesouraria.titular?.id ?? abaixoDoTopo);
+  for (const m of o.outros) resultado.set(m.id, topo);
+
+  return resultado;
 }

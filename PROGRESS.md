@@ -15,6 +15,8 @@
 
 ## Decisões
 
+- **Organograma livre:** `membros_gestao.superior_id` (migration `0004`, backfill pelos cargos) forma uma árvore; `ordem` ordena irmãos. Admin (`/admin/gestoes/[id]`): foto por membro (upload direto ao bucket `gestoes`, pasta `<gestao>/membros`), superior, ↑/↓, remover (filhos sobem um nível), "Organizar pelos cargos" e prévia ao vivo. Ciclos são recusados no servidor (`podeSerSuperior`) e ignorados na renderização (`montarArvore`). Público: mobile = lista indentada; a partir de `sm` = árvore com conectores (CSS `.org-tree`).
+
 - **Redesign (2026-10):** o tema escuro azul-marinho foi trocado por tema claro moderno com degradê ciano→violeta (pedido do D.A.). Tokens em `globals.css` (`--color-accent` violeta + `--color-accent-2` ciano, utilitários `bg-brand`, `text-gradient`, `bg-brand-soft`), fontes Bricolage Grotesque + Inter + JetBrains Mono, hero com `AuroraBackground` (CSS puro, sem `framer-motion`), cartões com sombra e elevação no hover, títulos sem caixa alta. OG images e e-mail também ficaram claros. `CLAUDE.md` atualizado. Sem rolagem horizontal em 360 px (12 páginas).
 
 - Dependências fora da lista do plano: `tsx` (devDependency) para rodar `scripts/*.mts`, como o próprio plano pressupõe. Nenhuma outra.

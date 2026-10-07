@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { montarOrganograma, temEstrutura, type MembroOrg } from "./organograma";
+import {
+  montarOrganograma,
+  superioresPadrao,
+  temEstrutura,
+  type MembroOrg,
+} from "./organograma";
 
 const m = (nome: string, cargo: string, ordem = 0): MembroOrg => ({
   id: nome,
@@ -7,20 +12,21 @@ const m = (nome: string, cargo: string, ordem = 0): MembroOrg => ({
   cargo,
   foto_url: null,
   ordem,
+  superior_id: null,
 });
 
-describe("montarOrganograma", () => {
-  const membros = [
-    m("Sofia", "Presidente", 1),
-    m("Igor", "Vice-Presidente", 2),
-    m("Kauã", "Secretário", 3),
-    m("Gabriel", "Vice-Secretário", 4),
-    m("Beatriz", "Tesoureira", 5),
-    m("Lucas", "Vice-Tesoureiro", 6),
-  ];
+const equipe = [
+  m("Sofia", "Presidente", 1),
+  m("Igor", "Vice-Presidente", 2),
+  m("Kauã", "Secretário", 3),
+  m("Gabriel", "Vice-Secretário", 4),
+  m("Beatriz", "Tesoureira", 5),
+  m("Lucas", "Vice-Tesoureiro", 6),
+];
 
+describe("montarOrganograma", () => {
   it("encaixa cada cargo na sua posição (inclusive flexão de gênero e acentos)", () => {
-    const o = montarOrganograma(membros);
+    const o = montarOrganograma(equipe);
     expect(o.presidente?.nome).toBe("Sofia");
     expect(o.vicePresidente?.nome).toBe("Igor");
     expect(o.secretaria.titular?.nome).toBe("Kauã");
@@ -57,5 +63,27 @@ describe("montarOrganograma", () => {
   it("sem membros ou sem cargos conhecidos não há estrutura", () => {
     expect(temEstrutura(montarOrganograma([]))).toBe(false);
     expect(temEstrutura(montarOrganograma([m("X", "Diretor")]))).toBe(false);
+  });
+});
+
+describe("superioresPadrao", () => {
+  it("monta presidente → vice → secretaria/tesouraria → vices", () => {
+    const s = superioresPadrao(equipe);
+    expect(s.get("Sofia")).toBeNull();
+    expect(s.get("Igor")).toBe("Sofia");
+    expect(s.get("Kauã")).toBe("Igor");
+    expect(s.get("Beatriz")).toBe("Igor");
+    expect(s.get("Gabriel")).toBe("Kauã");
+    expect(s.get("Lucas")).toBe("Beatriz");
+  });
+
+  it("sem vice-presidente, secretaria e tesouraria ligam direto ao presidente; extras ficam sob o presidente", () => {
+    const s = superioresPadrao([
+      m("P", "Presidente"),
+      m("S", "Secretário"),
+      m("D", "Diretor de Eventos"),
+    ]);
+    expect(s.get("S")).toBe("P");
+    expect(s.get("D")).toBe("P");
   });
 });

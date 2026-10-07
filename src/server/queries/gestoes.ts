@@ -1,8 +1,17 @@
 import { createPublicClient } from "@/lib/supabase/public";
 import type { Tables } from "@/types/helpers";
 
-export type GestaoAtiva = { id: string; nome: string; ano: number; slug: string; logo_url: string | null };
-export type Membro = Pick<Tables<"membros_gestao">, "id" | "nome" | "cargo" | "foto_url" | "ordem">;
+export type GestaoAtiva = {
+  id: string;
+  nome: string;
+  ano: number;
+  slug: string;
+  logo_url: string | null;
+};
+export type Membro = Pick<
+  Tables<"membros_gestao">,
+  "id" | "nome" | "cargo" | "foto_url" | "ordem" | "superior_id"
+>;
 export type GestaoComMembros = Tables<"gestoes"> & { membros_gestao: Membro[] };
 
 export async function getGestaoAtiva(): Promise<GestaoAtiva | null> {
@@ -20,7 +29,7 @@ export async function listarGestoes(): Promise<GestaoComMembros[]> {
   const supabase = createPublicClient();
   const { data } = await supabase
     .from("gestoes")
-    .select("*, membros_gestao(id, nome, cargo, foto_url, ordem)")
+    .select("*, membros_gestao(id, nome, cargo, foto_url, ordem, superior_id)")
     .order("ano", { ascending: false });
   return (data ?? []).map((g) => ({
     ...g,

@@ -219,3 +219,112 @@
     animation: none;
   }
 }
+
+/* Organograma: árvore livre. Mobile = lista indentada; a partir de sm = árvore clássica com conectores. */
+.org-tree {
+  --org-line: color-mix(in oklab, var(--color-accent) 38%, transparent);
+}
+
+.org-tree ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.org-tree ul ul {
+  margin: 0.75rem 0 0 0.5rem;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--org-line);
+}
+
+.org-tree li {
+  position: relative;
+}
+
+@media (min-width: 640px) {
+  .org-tree ul {
+    flex-direction: row;
+    justify-content: center;
+    gap: 0;
+    padding-top: 1.75rem;
+    position: relative;
+  }
+
+  .org-tree > ul {
+    padding-top: 0;
+    flex-wrap: wrap;
+    row-gap: 2rem;
+  }
+
+  .org-tree ul ul {
+    margin: 0;
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .org-tree li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.75rem 0.75rem 0;
+  }
+
+  .org-tree > ul > li {
+    padding-top: 0;
+  }
+
+  /* haste vertical do pai até a barra horizontal dos filhos */
+  .org-tree ul ul::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    height: 1.75rem;
+    border-left: 2px solid var(--org-line);
+  }
+
+  .org-tree li::before,
+  .org-tree li::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 50%;
+    width: 50%;
+    height: 1.75rem;
+    border-top: 2px solid var(--org-line);
+  }
+
+  .org-tree li::after {
+    right: auto;
+    left: 50%;
+    border-left: 2px solid var(--org-line);
+  }
+
+  .org-tree > ul > li::before,
+  .org-tree > ul > li::after,
+  .org-tree li:only-child::before,
+  .org-tree li:only-child::after {
+    display: none;
+  }
+
+  .org-tree li:only-child {
+    padding-top: 1.75rem;
+  }
+
+  .org-tree li:first-child::before,
+  .org-tree li:last-child::after {
+    border: 0 none;
+  }
+
+  .org-tree li:last-child::before {
+    border-right: 2px solid var(--org-line);
+    border-radius: 0 8px 0 0;
+  }
+
+  .org-tree li:first-child::after {
+    border-radius: 8px 0 0 0;
+  }
+}

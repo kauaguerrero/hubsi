@@ -14,10 +14,15 @@ const ERROS: Record<string, string> = {
   ativar: "Não foi possível trocar a gestão atual.",
 };
 
-export default async function GestoesPage({ searchParams }: PageProps<"/admin/gestoes">) {
+export default async function GestoesPage({
+  searchParams,
+}: PageProps<"/admin/gestoes">) {
   const { perfil, supabase } = await contextoAdmin("gestoes");
   const { erro } = await searchParams;
-  const { data: gestoes } = await supabase.from("gestoes").select("id, nome, ano, ativa").order("ano", { ascending: false });
+  const { data: gestoes } = await supabase
+    .from("gestoes")
+    .select("id, nome, ano, ativa")
+    .order("ano", { ascending: false });
   const superadmin = podeAcessar(perfil.papel, "usuarios");
 
   return (
@@ -27,18 +32,31 @@ export default async function GestoesPage({ searchParams }: PageProps<"/admin/ge
         <ButtonLink href="/admin/gestoes/novo">Nova gestão</ButtonLink>
       </div>
       {typeof erro === "string" && ERROS[erro] && (
-        <p role="alert" className="rounded-lg border border-danger px-4 py-3 text-danger">{ERROS[erro]}</p>
+        <p
+          role="alert"
+          className="border-danger text-danger rounded-lg border px-4 py-3"
+        >
+          {ERROS[erro]}
+        </p>
       )}
       <ul className="flex flex-col gap-3">
         {(gestoes ?? []).map((g) => (
           <li key={g.id}>
             <Card className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <Link href={`/admin/gestoes/${g.id}`} className="font-display text-2xl font-bold hover:text-accent">{g.nome} {g.ano}</Link>
+                <Link
+                  href={`/admin/gestoes/${g.id}`}
+                  className="font-display hover:text-accent text-2xl font-bold"
+                >
+                  {g.nome} {g.ano}
+                </Link>
                 {g.ativa && <Badge tom="acento">Atual</Badge>}
               </div>
               {!g.ativa && superadmin && (
-                <BotaoAcao action={tornarGestaoAtual.bind(null, g.id)} confirmar={`Tornar ${g.nome} ${g.ano} a gestão atual? O selo do site muda para ela.`}>
+                <BotaoAcao
+                  action={tornarGestaoAtual.bind(null, g.id)}
+                  confirmar={`Tornar ${g.nome} ${g.ano} a gestão atual? O selo do site muda para ela.`}
+                >
                   Tornar gestão atual
                 </BotaoAcao>
               )}

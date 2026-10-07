@@ -1,6 +1,6 @@
 import Image from "next/image";
-import type { ReactNode } from "react";
-import { montarOrganograma, type MembroOrg } from "@/lib/gestao/organograma";
+import { montarArvore, type NoArvore } from "@/lib/gestao/arvore";
+import type { MembroOrg } from "@/lib/gestao/organograma";
 import { cn } from "@/lib/utils/cn";
 
 function iniciais(nome: string): string {
@@ -16,10 +16,13 @@ function Avatar({ membro, grande }: { membro: MembroOrg; grande?: boolean }) {
   return membro.foto_url ? (
     <Image
       src={membro.foto_url}
-      alt={membro.nome}
-      width={80}
-      height={80}
-      className={cn("shrink-0 rounded-full object-cover", tamanho)}
+      alt={`Foto de ${membro.nome}`}
+      width={96}
+      height={96}
+      className={cn(
+        "border-surface shrink-0 rounded-full border-2 object-cover shadow-sm",
+        tamanho,
+      )}
     />
   ) : (
     <span
@@ -37,18 +40,17 @@ function Avatar({ membro, grande }: { membro: MembroOrg; grande?: boolean }) {
 function CartaoMembro({
   membro,
   destaque,
-  nivel,
 }: {
   membro: MembroOrg;
   destaque?: boolean;
-  nivel?: "alto";
 }) {
   return (
     <div
       className={cn(
-        "bg-surface shadow-card hover:shadow-pop flex w-full max-w-xs flex-col items-center gap-3 rounded-2xl border p-5 text-center transition-all duration-300 hover:-translate-y-1",
-        destaque ? "border-accent/40 ring-accent/10 ring-4" : "border-border",
-        nivel === "alto" && "px-8 py-6",
+        "bg-surface shadow-card hover:shadow-pop flex w-full max-w-xs flex-col items-center gap-3 rounded-2xl border p-5 text-center transition-all duration-300 hover:-translate-y-1 sm:w-52",
+        destaque
+          ? "border-accent/40 ring-accent/10 px-6 py-6 ring-4 sm:w-64"
+          : "border-border",
       )}
     >
       <Avatar membro={membro} grande={destaque} />
@@ -56,14 +58,14 @@ function CartaoMembro({
         <p
           className={cn(
             "font-display font-bold",
-            destaque ? "text-3xl" : "text-xl",
+            destaque ? "text-2xl" : "text-lg leading-tight",
           )}
         >
           {membro.nome}
         </p>
         <p
           className={cn(
-            "mt-1 inline-block rounded-full px-3 py-0.5 font-mono text-xs font-medium",
+            "mt-1.5 inline-block rounded-full px-3 py-0.5 font-mono text-xs font-medium",
             destaque ? "bg-brand text-on-accent" : "bg-accent/10 text-accent",
           )}
         >
@@ -74,108 +76,43 @@ function CartaoMembro({
   );
 }
 
-/** Linha vertical de circuito (degradê) ligando um nível ao próximo. */
-function Conector({ altura = "h-8" }: { altura?: string }) {
+function No({ no, nivel }: { no: NoArvore; nivel: number }) {
   return (
-    <span aria-hidden="true" className="relative flex flex-col items-center">
-      <span
-        className={cn("from-accent-2 to-accent w-0.5 bg-gradient-to-b", altura)}
-      />
-      <span className="border-accent bg-surface -mt-1 size-2.5 rounded-full border-2" />
-    </span>
+    <li>
+      <CartaoMembro membro={no.membro} destaque={nivel === 0} />
+      {no.filhos.length > 0 && (
+        <ul>
+          {no.filhos.map((f) => (
+            <No key={f.membro.id} no={f} nivel={nivel + 1} />
+          ))}
+        </ul>
+      )}
+    </li>
   );
 }
 
-function Ramo({
-  titulo,
-  titular,
-  vice,
-}: {
-  titulo: string;
-  titular?: MembroOrg;
-  vice?: MembroOrg;
-}) {
-  if (!titular && !vice) return null;
-  return (
-    <div className="flex flex-col items-center">
-      <Conector />
-      <p className="text-muted mt-2 mb-3 font-mono text-xs tracking-wider uppercase">
-        {titulo}
-      </p>
-      <div className="flex w-full flex-col items-center">
-        {titular && <CartaoMembro membro={titular} />}
-        {titular && vice && <Conector altura="h-6" />}
-        {vice && <CartaoMembro membro={vice} />}
-      </div>
-    </div>
-  );
-}
-
-/** Organograma da gestão: presidente → vice → secretaria e tesouraria (titular → vice). */
+/** Organograma em árvore livre: a hierarquia vem do "superior" de cada membro. */
 export function Organograma({
   membros,
-  rodape,
+  className,
 }: {
   membros: MembroOrg[];
-  rodape?: ReactNode;
+  className?: string;
 }) {
-  const org = montarOrganograma(membros);
-  const doisRamos =
-    [org.secretaria, org.tesouraria].filter((r) => r.titular || r.vice)
-      .length === 2;
+  const raizes = montarArvore(membros);
+  if (raizes.length === 0) return null;
 
   return (
-    <figure
-      className="flex flex-col items-center"
+    <div
+      className={cn("org-tree w-full sm:overflow-x-auto sm:pb-2", className)}
+      role="group"
       aria-label="Organograma da gestão"
     >
-      {org.presidente && (
-        <CartaoMembro membro={org.presidente} destaque nivel="alto" />
-      )}
-      {org.presidente && org.vicePresidente && <Conector />}
-      {org.vicePresidente && <CartaoMembro membro={org.vicePresidente} />}
-
-      {(org.secretaria.titular ||
-        org.secretaria.vice ||
-        org.tesouraria.titular ||
-        org.tesouraria.vice) && (
-        <div
-          className={cn(
-            "relative mt-0 grid w-full max-w-3xl gap-x-8",
-            doisRamos ? "sm:grid-cols-2" : "sm:grid-cols-1",
-            // barra horizontal que "abre" os dois ramos (só em telas largas)
-            doisRamos &&
-              "sm:before:bg-accent/40 sm:before:absolute sm:before:top-0 sm:before:right-1/4 sm:before:left-1/4 sm:before:h-0.5",
-          )}
-        >
-          <Ramo
-            titulo="Secretaria"
-            titular={org.secretaria.titular}
-            vice={org.secretaria.vice}
-          />
-          <Ramo
-            titulo="Tesouraria"
-            titular={org.tesouraria.titular}
-            vice={org.tesouraria.vice}
-          />
-        </div>
-      )}
-
-      {org.outros.length > 0 && (
-        <div className="mt-10 flex w-full flex-col items-center gap-4">
-          <p className="text-muted font-mono text-xs tracking-wider uppercase">
-            Demais membros
-          </p>
-          <ul className="grid w-full gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {org.outros.map((m) => (
-              <li key={m.id} className="flex justify-center">
-                <CartaoMembro membro={m} />
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {rodape}
-    </figure>
+      <ul>
+        {raizes.map((r) => (
+          <No key={r.membro.id} no={r} nivel={0} />
+        ))}
+      </ul>
+    </div>
   );
 }
