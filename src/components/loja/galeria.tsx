@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { LogoHubSI } from "@/components/brand/logo-hub-si";
 import { cn } from "@/lib/utils/cn";
 
 export function Galeria({ fotos, nome }: { fotos: string[]; nome: string }) {
@@ -11,7 +10,13 @@ export function Galeria({ fotos, nome }: { fotos: string[]; nome: string }) {
   if (fotos.length === 0) {
     return (
       <div className="bg-brand-soft border-border flex aspect-square items-center justify-center rounded-2xl border">
-        <LogoHubSI mostrarTexto={false} className="scale-[3.5] opacity-70" />
+        <Image
+          src="/logo-si.png"
+          alt=""
+          width={160}
+          height={160}
+          className="size-32 rounded-full opacity-80 shadow-sm"
+        />
       </div>
     );
   }

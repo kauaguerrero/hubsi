@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { LogoHubSI } from "@/components/brand/logo-hub-si";
 import { Badge } from "@/components/ui/display";
 import { formatarBRL } from "@/lib/utils/money";
 
@@ -35,7 +34,13 @@ export function ProdutoCard({
           />
         ) : (
           <div className="flex h-full items-center justify-center opacity-70">
-            <LogoHubSI mostrarTexto={false} className="scale-[2.4]" />
+            <Image
+              src="/logo-si.png"
+              alt=""
+              width={160}
+              height={160}
+              className="size-20 rounded-full shadow-sm"
+            />
           </div>
         )}
       </div>

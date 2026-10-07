@@ -15,6 +15,8 @@
 
 ## Decisões
 
+- **Logo principal e favicon:** o emblema oficial do D.A. (JPG 150×150 fornecido, recortado em círculo com fundo transparente) é o logo ao lado de "Hub S.I." (`public/logo-si.png`, `LogoHubSI`) e o favicon (`src/app/icon.png`, `apple-icon.png`, `favicon.ico`). A origem tem só 150 px: se houver versão em alta resolução (ou SVG), substituir esses arquivos melhora a nitidez em telas retina.
+
 - **Logo da chapa:** o selo do cabeçalho/rodapé/menu mostra o logo na proporção original (h-16 no cabeçalho, h-20 no rodapé/menu). O upload de logo da gestão agora **recorta margens e torna o fundo branco transparente** (`recortarMargens`, PNG); o logo já cadastrado (JPG quadrado com margens) foi recortado uma vez por script. Observação: mudanças feitas direto no banco (fora do painel) só aparecem após a revalidação de 5 min do cache.
 
 - **Organograma livre:** `membros_gestao.superior_id` (migration `0004`, backfill pelos cargos) forma uma árvore; `ordem` ordena irmãos. Admin (`/admin/gestoes/[id]`): foto por membro (upload direto ao bucket `gestoes`, pasta `<gestao>/membros`), superior, ↑/↓, remover (filhos sobem um nível), "Organizar pelos cargos" e prévia ao vivo. Ciclos são recusados no servidor (`podeSerSuperior`) e ignorados na renderização (`montarArvore`). Público: mobile = lista indentada; a partir de `sm` = árvore com conectores (CSS `.org-tree`).

@@ -1,70 +1,21 @@
-import { useId } from "react";
+import Image from "next/image";
 import { cn } from "@/lib/utils/cn";
 
 type Props = { className?: string; mostrarTexto?: boolean };
 
-/** Wordmark "Hub S.I." + ícone de circuito com nós, em degradê ciano → violeta. */
+/** Emblema oficial do D.A. de Sistemas de Informação + wordmark "Hub S.I.". */
 export function LogoHubSI({ className, mostrarTexto = true }: Props) {
-  const id = useId();
-
   return (
     <span className={cn("inline-flex items-center gap-2.5", className)}>
-      <svg
-        width="34"
-        height="34"
-        viewBox="0 0 32 32"
-        fill="none"
-        role="img"
-        aria-label={mostrarTexto ? undefined : "Hub S.I."}
-        aria-hidden={mostrarTexto ? true : undefined}
-      >
-        <defs>
-          <linearGradient
-            id={id}
-            x1="2"
-            y1="4"
-            x2="30"
-            y2="28"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stopColor="#06b6d4" />
-            <stop offset="1" stopColor="#7c3aed" />
-          </linearGradient>
-        </defs>
-        <rect width="32" height="32" rx="9" fill="var(--color-surface)" />
-        <path
-          d="M6 16h6m0 0 3-6h8M12 16l3 6h8M15 10v12"
-          stroke={`url(#${id})`}
-          strokeWidth="2.2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <circle
-          cx="6"
-          cy="16"
-          r="2.2"
-          fill="var(--color-surface)"
-          stroke={`url(#${id})`}
-          strokeWidth="2"
-        />
-        <circle
-          cx="23"
-          cy="10"
-          r="2.2"
-          fill="var(--color-surface)"
-          stroke={`url(#${id})`}
-          strokeWidth="2"
-        />
-        <circle
-          cx="23"
-          cy="22"
-          r="2.2"
-          fill="var(--color-surface)"
-          stroke={`url(#${id})`}
-          strokeWidth="2"
-        />
-        <circle cx="15" cy="16" r="2.6" fill={`url(#${id})`} />
-      </svg>
+      <Image
+        src="/logo-si.png"
+        alt={
+          mostrarTexto ? "" : "Diretório Acadêmico de Sistemas de Informação"
+        }
+        width={160}
+        height={160}
+        className="size-11 shrink-0 rounded-full shadow-sm"
+      />
       {mostrarTexto && (
         <span className="font-display text-fg text-2xl leading-none font-extrabold tracking-tight">
           Hub <span className="text-gradient">S.I.</span>
