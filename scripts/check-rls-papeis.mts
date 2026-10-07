@@ -13,7 +13,7 @@ const sufixo = Date.now();
 const senha = `Tmp-${sufixo}-aA1!`;
 const papeis = ["editor", "admin", "superadmin"] as const;
 const usuarios: Record<string, { id: string; email: string }> = {};
-const limpeza: (() => Promise<unknown>)[] = [];
+const limpeza: (() => PromiseLike<unknown>)[] = [];
 
 try {
   for (const papel of papeis) {

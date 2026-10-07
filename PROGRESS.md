@@ -11,8 +11,11 @@
 - **Fase 6:** /loja, /loja/[slug] (galeria, variações, medidas, OG), carrinho, /checkout, server actions `criarPedido` (rate limit, preço do banco, cliente por CPF) e `consultarPedido`, /pedido/[codigo], /meus-pedidos. 36 testes (cálculo, lote fechado, preço manipulado, carrinho). Operações de banco validadas com script descartável.
 - **Fase 7:** client Asaas tipado (customers, payments, pixQrCode, DELETE), `criarCobranca` real ligada ao `criarPedido`, página do pedido com QR/copia-e-cola/link de cartão e polling, webhook idempotente com token em tempo constante, e-mail Resend (sem chave só loga em dev), cron de expiração + `vercel.json`. 62 testes (client, webhook, cron, e-mail). Sem validação no sandbox real (standby).
 - **Fase 8:** painel completo: login por link mágico + proxy, layout (nav lateral/inferior), dashboard, lotes, produtos (fotos, variações), pedidos (ações e cancelamento no Asaas), retirada, resumo/CSV da gráfica sem CPF, eventos/palestrantes, hub, gestões (membros, logo, tornar atual), usuários (convite, papel, remoção com trava do último superadmin), log_acoes, script criar-superadmin. 86 testes + `scripts/check-rls-papeis.mts` (24 checks de RLS por papel no banco real, todos ok).
+- **Fase 9:** revisão de segurança (tabela abaixo), sem rolagem horizontal a 360 px (13 páginas), README com setup/variáveis/webhook/cron/superadmin/transição de gestão e `docs/teste-sandbox.md`. Removidos assets de boilerplate.
 
 ## Decisões
+
+- Dependências fora da lista do plano: `tsx` (devDependency) para rodar `scripts/*.mts`, como o próprio plano pressupõe. Nenhuma outra.
 
 - Admin: `src/proxy.ts` (Next 16) exige sessão em `/admin/*`; o papel é checado por `requireRole` em cada página/action (RLS é a barreira real). Formulários usam `FormAcao` (chama a action manualmente para não resetar campos em erro). Uploads de imagem vão do navegador direto ao Storage (sessão do admin) e a action só grava a URL após validar o prefixo do bucket. Datas do painel são em horário de Brasília (offset fixo -03:00). Remover variação já vendida apenas a desativa.
 - **Config manual no Supabase (Auth) para o login funcionar:** Site URL e Redirect URLs com `<SITE>/auth/callback`; nos templates de e-mail (Magic Link e Invite user) usar `{{ .SiteURL }}/auth/callback?token_hash={{ .TokenHash }}&type=magiclink` (invite: `type=invite`). Ver README (Fase 9).
@@ -42,3 +45,20 @@
 
 
 - `.env.local` não existe. Faltam todas as variáveis da Fase 0 (Supabase URL/keys/token/senha, Asaas, Resend, `CRON_SECRET`).
+
+## Revisão de segurança (Fase 9)
+
+| # | Regra | Onde | Resultado |
+|---|---|---|---|
+| 1 | `ASAAS_API_KEY` e service role só no servidor | `src/lib/env.server.ts`, `src/lib/supabase/admin.ts`, `src/lib/asaas/*` (todos `server-only`); `grep NEXT_PUBLIC_` só lista URL do site, URL e anon key do Supabase | ok |
+| 2 | Webhook rejeita sem `asaas-access-token` (tempo constante) | `src/server/webhooks/asaas.ts` (`tokenValido`: sha256 + `timingSafeEqual`), `src/app/api/webhooks/asaas/route.ts` (sem token configurado → 401); testes de token ausente/errado | ok |
+| 3 | Webhook idempotente | `webhook_eventos.id_evento_asaas` único + `registrarEvento`; evento repetido → 200 sem efeito; falha interna remove o registro e responde 500 para reenvio; testes | ok |
+| 4 | Status só muda por webhook, cron ou admin | `grep .update(` com status: webhook (`asaas-repo.ts`), cron, `pedidos-admin.ts` e cancelamento server-side em `criarPedido` quando a criação falha; RLS: só admin/superadmin escrevem em `pedidos`; nenhuma rota aceita status do navegador | ok |
+| 5 | Valor calculado no servidor | `src/server/pedidos/calculo.ts` (`montarPedido`) usa preços do banco; entrada nem tem campo de preço; testes de preço manipulado | ok |
+| 6 | RLS em todas as tabelas; CPF/e-mail/WhatsApp só admin/superadmin | `0002_rls.sql`; `scripts/check-rls.mts` (anon) e `scripts/check-rls-papeis.mts` (24 checks por papel) rodados no banco real; nenhum `select` público toca `clientes`; `getPedidoPublico` não seleciona dados do cliente | ok |
+| 7 | CSV e lista de retirada sem CPF | `src/lib/pedidos/grafica.ts` (só produto/tamanho/cor/qtd, com proteção contra injeção de fórmula; teste); `retirada/page.tsx` seleciona só nome | ok |
+| 8 | Nenhum segredo em código/log/erro | `.env*` ignorados (exceto `.env.example`); `AsaasError`/`AsaasIndisponivelError` nunca incluem a chave (teste); logs só com `error.name`; e-mail de dev não loga conteúdo | ok |
+
+Outras verificações: links do Hub só `http(s)` (schema + teste); URLs de imagem validadas contra o prefixo do bucket antes de gravar; login por link mágico responde sempre a mesma mensagem e tem rate limit; `/pedido/[codigo]` e `/api/pedidos/*/status` sem cache; `/admin/*` protegido por proxy + `requireRole`; acessibilidade: `label` em todos os campos (`Field`), foco visível global, `alt` nas imagens, contraste do acento ciano ≥ 10:1 sobre o fundo, alvos de toque ≥ 44 px, sem rolagem horizontal em 360 px (medido com Edge headless em 13 páginas).
+
+**Pendente (não bloqueia o código):** tudo que depende de chaves reais — ver "STANDBY — Asaas" em Bloqueios e `docs/teste-sandbox.md`; configurar o Auth do Supabase (README); confirmar medidas da camisa e textos "a definir" em `/privacidade`; configurar variáveis na Vercel.

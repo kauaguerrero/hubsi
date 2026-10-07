@@ -226,13 +226,13 @@ Se `ASAAS_API_KEY` faltar: implemente tudo com o client tipado, cubra com testes
 ## Fase 9 — Revisão final e preparação do deploy
 
 **Tarefas**
-- [ ] Revisar cada item de "Regras de segurança" do `CLAUDE.md` contra o código e registrar o resultado em `PROGRESS.md` (item, arquivo, ok/corrigido)
-- [ ] `grep` por `NEXT_PUBLIC_` e garantir que nenhum segredo usa o prefixo
-- [ ] Conferir que nenhum `select` público retorna `cpf`, `email` ou `whatsapp`
-- [ ] Acessibilidade: labels em todos os inputs, foco visível, `alt` nas imagens, contraste do acento sobre o fundo
-- [ ] Testar visualmente em 360 px (dev server em background + screenshot, se disponível) e corrigir rolagem horizontal
-- [ ] `README.md`: setup local, variáveis, comandos, como criar o primeiro superadmin, como configurar o webhook no painel do Asaas (URL `/api/webhooks/asaas` + token), checklist de transição de gestão
-- [ ] Checklist manual de testes no sandbox em `docs/teste-sandbox.md`: Pix pago, cartão pago, vencido, estornado, webhook repetido, webhook sem token
+- [x] Revisar cada item de "Regras de segurança" do `CLAUDE.md` contra o código e registrar o resultado em `PROGRESS.md` (item, arquivo, ok/corrigido)
+- [x] `grep` por `NEXT_PUBLIC_` e garantir que nenhum segredo usa o prefixo
+- [x] Conferir que nenhum `select` público retorna `cpf`, `email` ou `whatsapp`
+- [x] Acessibilidade: labels em todos os inputs, foco visível, `alt` nas imagens, contraste do acento sobre o fundo
+- [x] Testar visualmente em 360 px (dev server em background + screenshot, se disponível) e corrigir rolagem horizontal
+- [x] `README.md`: setup local, variáveis, comandos, como criar o primeiro superadmin, como configurar o webhook no painel do Asaas (URL `/api/webhooks/asaas` + token), checklist de transição de gestão
+- [x] Checklist manual de testes no sandbox em `docs/teste-sandbox.md`: Pix pago, cartão pago, vencido, estornado, webhook repetido, webhook sem token
 
 **Validação:** `pnpm typecheck && pnpm lint && pnpm test && pnpm build` + commit `chore(fase-9): revisao final`
 
