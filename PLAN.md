@@ -132,14 +132,14 @@ Se `SUPABASE_ACCESS_TOKEN` ou `SUPABASE_PROJECT_REF` faltar: escreva as migratio
 ## Fase 5 — Páginas públicas (exceto loja)
 
 **Tarefas**
-- [ ] `/` Home: hero, próximo evento com contagem regressiva (client component pequeno), produtos do lote aberto, atalhos para eventos/sobre/hub
-- [ ] `/eventos`: próximos e realizados em trilha vertical (nós; próximo evento destacado com acento)
-- [ ] `/eventos/[slug]`: detalhes, palestrantes, link de inscrição externo, botão Google Agenda (URL template) e rota `/eventos/[slug]/ics` que devolve `.ics`
-- [ ] `/sobre`: o que o D.A. faz, gestão atual com membros, gestões anteriores
-- [ ] `/hub`: links por categoria vindos de `links_hub`
-- [ ] `/privacidade`: finalidade dos dados, quem acessa, prazo de guarda (texto marcado como "a definir pelo D.A." onde não há decisão), contato
-- [ ] Metadata por página e imagem Open Graph dinâmica para produto e evento (`opengraph-image.tsx`)
-- [ ] Revalidação: páginas públicas com `revalidate` curto ou `revalidateTag` disparado pelas ações do admin
+- [x] `/` Home: hero, próximo evento com contagem regressiva (client component pequeno), produtos do lote aberto, atalhos para eventos/sobre/hub
+- [x] `/eventos`: próximos e realizados em trilha vertical (nós; próximo evento destacado com acento)
+- [x] `/eventos/[slug]`: detalhes, palestrantes, link de inscrição externo, botão Google Agenda (URL template) e rota `/eventos/[slug]/ics` que devolve `.ics`
+- [x] `/sobre`: o que o D.A. faz, gestão atual com membros, gestões anteriores
+- [x] `/hub`: links por categoria vindos de `links_hub`
+- [x] `/privacidade`: finalidade dos dados, quem acessa, prazo de guarda (texto marcado como "a definir pelo D.A." onde não há decisão), contato
+- [x] Metadata por página e OG dinâmica de evento (a de produto vem na Fase 6)
+- [x] Revalidação: páginas públicas com `revalidate` curto ou `revalidateTag` disparado pelas ações do admin
 
 **Validação:** `pnpm typecheck && pnpm lint && pnpm build`
 

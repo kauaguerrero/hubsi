@@ -7,8 +7,11 @@
 - **Fase 2 — Banco:** migrations 0001–0003 aplicadas no projeto remoto, seed aplicado (`db push --include-seed`), `database.ts` gerado, `scripts/check-rls.mts` (rodar com `pnpm tsx --env-file=.env.local scripts/check-rls.mts`) confirma RLS: anon não lê pedidos/clientes/itens/webhook/rate_limits/log/perfis e lê o conteúdo público.
 - **Fase 3:** clients Supabase (server/client/admin), validadores (CPF, Zod), utilitários (money, datas, código de pedido), `requireRole`. 20 testes verdes.
 - **Fase 4:** tokens e fontes (Barlow/Barlow Condensed/JetBrains Mono), componentes ui e brand (logo, CircuitTrace, SeloGestao), Header/MenuMobile/Footer, layout público com revalidate 5 min, 404 StackOverflowError e console.log em produção. Build verde.
+- **Fase 5:** home (hero, próximo evento com contagem, produtos do lote), /eventos em trilha, /eventos/[slug] (+ .ics, Google Agenda, OG), /sobre, /hub, /privacidade. Smoke test em produção local: todas as rotas 200, 404 ok. 24 testes.
 
 ## Decisões
+
+- OG dinâmica: feita para eventos na Fase 5; a de produto entra na Fase 6 junto com `/loja/[slug]`. `next.config.ts` libera `*.supabase.co` para `next/image`. Revalidação: `revalidate = 300` no layout público; as actions do admin (Fase 8) devem chamar `revalidatePath("/", "layout")`.
 
 - Leituras públicas usam `createPublicClient()` (`src/lib/supabase/public.ts`, anon sem cookies) para permitir ISR; o client com cookies fica para áreas autenticadas.
 
