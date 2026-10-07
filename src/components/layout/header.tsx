@@ -8,7 +8,7 @@ import { NAV_LINKS } from "./nav-links";
 export function Header() {
   return (
     <header className="border-border/70 bg-surface/75 sticky top-0 z-40 border-b backdrop-blur-xl">
-      <div className="relative mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
+      <div className="relative mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 lg:h-[5.25rem]">
         <Link href="/" aria-label="Hub S.I. — página inicial">
           <LogoHubSI />
         </Link>
@@ -28,13 +28,13 @@ export function Header() {
           </ul>
         </nav>
 
-        <div className="hidden md:block">
+        <div className="hidden lg:block">
           <SeloGestao />
         </div>
 
         <div className="flex items-center gap-2">
           <CarrinhoBadge />
-          <MenuMobile selo={<SeloGestao />} />
+          <MenuMobile selo={<SeloGestao tamanho="lg" />} />
         </div>
       </div>
     </header>

@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useId, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { recortarMargens } from "@/lib/utils/imagem";
 import type { EstadoForm } from "@/server/actions/pedidos";
 
 const TIPOS = ["image/jpeg", "image/png", "image/webp"];
@@ -20,10 +21,18 @@ type Props = {
   rotulo: string;
   /** Server action que grava a URL pública no registro. */
   aoEnviar: (url: string) => Promise<EstadoForm | void>;
+  /** Para logos: remove a margem em volta e deixa o fundo branco transparente (vira PNG). */
+  recortarMargens?: boolean;
 };
 
 /** Envia a imagem direto do navegador ao Storage (sessão do admin; evita o limite de corpo das actions). */
-export function UploadImagem({ bucket, pasta, rotulo, aoEnviar }: Props) {
+export function UploadImagem({
+  bucket,
+  pasta,
+  rotulo,
+  aoEnviar,
+  recortarMargens: recortar,
+}: Props) {
   const id = useId();
   const router = useRouter();
   const [msg, setMsg] = useState<{ tipo: "erro" | "ok"; texto: string } | null>(
@@ -31,17 +40,27 @@ export function UploadImagem({ bucket, pasta, rotulo, aoEnviar }: Props) {
   );
   const [enviando, setEnviando] = useState(false);
 
-  async function aoEscolher(arquivo: File | undefined) {
-    if (!arquivo) return;
-    if (!TIPOS.includes(arquivo.type))
+  async function aoEscolher(escolhido: File | undefined) {
+    if (!escolhido) return;
+    if (!TIPOS.includes(escolhido.type))
       return setMsg({ tipo: "erro", texto: "Use JPG, PNG ou WebP." });
-    if (arquivo.size > MAX_BYTES)
+    if (escolhido.size > MAX_BYTES)
       return setMsg({ tipo: "erro", texto: "A imagem deve ter até 5 MB." });
 
     setEnviando(true);
     setMsg(null);
+
+    let arquivo = escolhido;
+    if (recortar) {
+      try {
+        arquivo = await recortarMargens(escolhido);
+      } catch {
+        arquivo = escolhido; // sem recorte, envia o original
+      }
+    }
+
     const supabase = createClient();
-    const caminho = `${pasta}/${crypto.randomUUID()}.${EXT[arquivo.type]}`;
+    const caminho = `${pasta}/${crypto.randomUUID()}.${EXT[arquivo.type] ?? "png"}`;
     const { error } = await supabase.storage
       .from(bucket)
       .upload(caminho, arquivo, { contentType: arquivo.type });
@@ -53,7 +72,12 @@ export function UploadImagem({ bucket, pasta, rotulo, aoEnviar }: Props) {
     const r = await aoEnviar(data.publicUrl);
     setEnviando(false);
     if (r?.erro) return setMsg({ tipo: "erro", texto: r.erro });
-    setMsg({ tipo: "ok", texto: "Imagem enviada." });
+    setMsg({
+      tipo: "ok",
+      texto: recortar
+        ? "Imagem enviada (margens recortadas)."
+        : "Imagem enviada.",
+    });
     router.refresh();
   }
 

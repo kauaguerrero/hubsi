@@ -19,7 +19,7 @@ export function Footer() {
             <p className="text-muted text-sm">
               D.A. de Sistemas de Informação da FAFRAM.
             </p>
-            <SeloGestao />
+            <SeloGestao tamanho="lg" />
           </div>
 
           <nav aria-label="Rodapé">

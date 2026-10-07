@@ -124,6 +124,7 @@ export default async function GestaoAdminPage({
               pasta={id}
               rotulo="Enviar logo (JPG, PNG ou WebP, até 5 MB)"
               aoEnviar={definirLogoGestao.bind(null, id)}
+              recortarMargens
             />
           </section>
 
