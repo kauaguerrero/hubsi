@@ -15,6 +15,8 @@
 
 ## Decisões
 
+- **Catálogo real (2026-10):** `Camisa Hub S.I.` virou 1 produto com 4 modelos (Camiseta branca/Diretoria, Camiseta azul, Polo branca, Polo branca com circuitos) × P/M/G/GG = 16 variações; o modelo é guardado na coluna `variacoes.cor` e a interface o chama de "Modelo". Fotos em `produtos/<id-do-produto>/` com nomes descritivos. **Preços ainda são os de exemplo (camisa R$ 65,00, caneca R$ 35,00) — o D.A. vai informar os reais.** A tabela de medidas segue como referência (polo e camiseta podem diferir).
+
 - **Logo principal e favicon:** o emblema oficial do D.A. (JPG 150×150 fornecido, recortado em círculo com fundo transparente) é o logo ao lado de "Hub S.I." (`public/logo-si.png`, `LogoHubSI`) e o favicon (`src/app/icon.png`, `apple-icon.png`, `favicon.ico`). A origem tem só 150 px: se houver versão em alta resolução (ou SVG), substituir esses arquivos melhora a nitidez em telas retina.
 
 - **Logo da chapa:** o selo do cabeçalho/rodapé/menu mostra o logo na proporção original (h-16 no cabeçalho, h-20 no rodapé/menu). O upload de logo da gestão agora **recorta margens e torna o fundo branco transparente** (`recortarMargens`, PNG); o logo já cadastrado (JPG quadrado com margens) foi recortado uma vez por script. Observação: mudanças feitas direto no banco (fora do painel) só aparecem após a revalidação de 5 min do cache.

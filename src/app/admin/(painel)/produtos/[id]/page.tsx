@@ -86,7 +86,7 @@ export default async function ProdutoAdminPage({ params }: PageProps<"/admin/pro
             </ul>
             <FormAcao action={adicionarVariacao.bind(null, id)} rotulo="Adicionar variação" limparAoSalvar className="grid gap-4 sm:grid-cols-2">
               <Input id="tamanho" name="tamanho" label="Tamanho" placeholder="P, M, G…" />
-              <Input id="cor" name="cor" label="Cor" placeholder="Preta, Azul…" />
+              <Input id="cor" name="cor" label="Modelo / cor" placeholder="Polo branca, Azul…" />
             </FormAcao>
           </section>
 

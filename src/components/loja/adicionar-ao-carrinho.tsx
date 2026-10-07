@@ -59,7 +59,7 @@ export function AdicionarAoCarrinho({
     if (precisaVariacao && !variacao) {
       setMensagem({
         tipo: "erro",
-        texto: "Escolha tamanho e cor antes de adicionar.",
+        texto: "Escolha o modelo e o tamanho antes de adicionar.",
       });
       return;
     }
@@ -104,7 +104,7 @@ export function AdicionarAoCarrinho({
         {cores.length > 1 && (
           <Select
             id="cor"
-            label="Cor"
+            label="Modelo"
             value={cor}
             onChange={(e) => setCor(e.target.value)}
           >
