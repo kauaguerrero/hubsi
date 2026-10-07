@@ -4,7 +4,7 @@
 
 - **Fase 1 — Bootstrap:** app Next 16 + Tailwind 4 na raiz, dependências do plano, scripts, vitest (1 teste), tsconfig estrito com `noUncheckedIndexedAccess`, estrutura de pastas, `.env.example`, `env.ts`. `typecheck`, `lint`, `test` e `build` verdes. `typecheck` roda `next typegen` antes do `tsc` (tipos globais `LayoutProps`).
 
-- **Fase 2 — Banco (parcial):** migrations `0001_schema`, `0002_rls`, `0003_funcoes`, `seed.sql`, `src/types/database.ts` mínimo (à mão, com aviso) e `scripts/check-rls.ts`. `supabase init` feito; `link`, `db:push` e `db:types` NÃO rodados. SQL não validado localmente (sem Docker).
+- **Fase 2 — Banco:** migrations 0001–0003 aplicadas no projeto remoto, seed aplicado (`db push --include-seed`), `database.ts` gerado, `scripts/check-rls.mts` (rodar com `pnpm tsx --env-file=.env.local scripts/check-rls.mts`) confirma RLS: anon não lê pedidos/clientes/itens/webhook/rate_limits/log/perfis e lê o conteúdo público.
 
 ## Decisões
 
@@ -17,6 +17,5 @@
 
 ## Bloqueios
 
-- Fase 2: `SUPABASE_ACCESS_TOKEN` e `SUPABASE_PROJECT_REF` vazios no `.env.local` → falta `supabase link`, `pnpm db:push`, `pnpm db:types` e rodar `pnpm tsx --env-file=.env.local scripts/check-rls.ts`.
 
 - `.env.local` não existe. Faltam todas as variáveis da Fase 0 (Supabase URL/keys/token/senha, Asaas, Resend, `CRON_SECRET`).

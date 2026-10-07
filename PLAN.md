@@ -65,7 +65,7 @@ O Claude Code não executa esta fase. Ao iniciar, apenas confira se `.env.local`
 Se `SUPABASE_ACCESS_TOKEN` ou `SUPABASE_PROJECT_REF` faltar: escreva as migrations e o seed, **não** rode `db push` nem `db:types`, crie `src/types/database.ts` mínimo escrito à mão com aviso no topo, registre o bloqueio e siga.
 
 **Tarefas**
-- [x] `pnpm supabase init` (não interativo) — **`link` pendente** (bloqueio)
+- [x] `pnpm supabase init` (não interativo) e `pnpm supabase link --project-ref $SUPABASE_PROJECT_REF`
 - [x] Migration `0001_schema.sql`:
   - enums: `status_lote` (aberto, fechado, em_producao, entregue), `status_pedido` (aguardando_pagamento, pago, em_producao, disponivel, retirado, expirado, cancelado, estornado), `forma_pagamento` (pix, cartao, indefinido), `status_evento` (rascunho, publicado, cancelado), `tipo_evento` (palestra, workshop, hackathon, social, semana_academica, outro), `papel_admin` (superadmin, admin, editor)
   - tabelas: `gestoes`, `membros_gestao`, `lotes`, `produtos`, `variacoes`, `clientes`, `pedidos`, `itens_pedido`, `webhook_eventos`, `eventos`, `palestrantes`, `links_hub`, `perfis_admin`, `log_acoes`, `rate_limits`
@@ -89,7 +89,7 @@ Se `SUPABASE_ACCESS_TOKEN` ou `SUPABASE_PROJECT_REF` faltar: escreva as migratio
   - `checar_rate_limit(chave text, limite int, janela_segundos int) returns boolean` (uso via service role)
 - [x] Storage: buckets públicos `produtos`, `eventos`, `gestoes` com policies de escrita para admin/editor conforme o domínio
 - [x] `supabase/seed.sql`: gestão OverFlow 2026 ativa, 1 lote aberto (fechamento em 30 dias), 2 produtos (camisa com P/M/G/GG em 2 cores, caneca sem variação de tamanho), 3 eventos (1 passado, 2 futuros), 5 links do hub
-- [ ] `pnpm db:push` e `pnpm db:types` — **pendente** (bloqueio: faltam `SUPABASE_ACCESS_TOKEN` e `SUPABASE_PROJECT_REF`)
+- [x] `pnpm db:push` e `pnpm db:types`
 
 **Validação:** `pnpm typecheck`; migrations aplicadas sem erro; consulta anônima a `pedidos` retorna vazio/negado (testar com o client anon num script em `scripts/check-rls.ts`, rodado com `pnpm tsx`, e depois apagado ou mantido em `scripts/`).
 
@@ -238,6 +238,4 @@ Se `ASAAS_API_KEY` faltar: implemente tudo com o client tipado, cubra com testes
 
 ---
 
-## Depois do MVP (não executar agora)
 
-V2: guia do calouro, notificação por WhatsApp, galeria de eventos, command palette (Ctrl+K), tela de consulta de logs. V3: inscrição própria em eventos com QR Code de check-in, ingressos pagos.
