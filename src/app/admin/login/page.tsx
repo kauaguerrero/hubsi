@@ -12,7 +12,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/admin/logi
       <LogoHubSI />
       <div className="flex flex-col gap-2">
         <h1 className="text-4xl">Painel do D.A.</h1>
-        <p className="text-muted">Informe seu e-mail para receber um link de acesso.</p>
+        <p className="text-muted">Entre com seu e-mail e senha.</p>
       </div>
       {erro === "link" && (
         <p role="alert" className="rounded-lg border border-danger px-4 py-3 text-danger">

@@ -72,3 +72,11 @@
 Outras verificações: links do Hub só `http(s)` (schema + teste); URLs de imagem validadas contra o prefixo do bucket antes de gravar; login por link mágico responde sempre a mesma mensagem e tem rate limit; `/pedido/[codigo]` e `/api/pedidos/*/status` sem cache; `/admin/*` protegido por proxy + `requireRole`; acessibilidade: `label` em todos os campos (`Field`), foco visível global, `alt` nas imagens, contraste do acento ciano ≥ 10:1 sobre o fundo, alvos de toque ≥ 44 px, sem rolagem horizontal em 360 px (medido com Edge headless em 13 páginas).
 
 **Pendente (não bloqueia o código):** tudo que depende de chaves reais — ver "STANDBY — Asaas" em Bloqueios e `docs/teste-sandbox.md`; configurar o Auth do Supabase (README); confirmar medidas da camisa e textos "a definir" em `/privacidade`; configurar variáveis na Vercel.
+
+## Destaques (anúncios na home)
+
+- Migration `0005_destaques.sql`: `destaques`, `destaque_itens`, `destaque_interessados`, `destaque_interesses` (preço copiado do item no registro). Leitura pública só de destaque/itens publicados; interessados e interesses só `admin`/`superadmin` (RLS conferida com role `anon`).
+- Tipos: `save_the_date`, `formulario` (interesse em itens, com quantidade), `link`. Expiração (`expira_em`) tira o banner da home; a página `/destaque/[slug]` mostra "encerrado".
+- Admin: `/admin/destaques` (botão também em Eventos), KPIs (interessados, valor esperado, unidades, contatados, demanda por item), lista com WhatsApp, "contatado" e CSV (com e-mail/WhatsApp, sem CPF — não é coletado).
+- Registro público via server action com service role, Zod, rate limit por IP (8/10 min) e preço sempre do banco; mesmo e-mail no mesmo destaque atualiza o registro.
+- Login do painel trocado de link mágico para e-mail e senha (`entrarComSenha`).

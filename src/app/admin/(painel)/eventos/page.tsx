@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Badge, Card } from "@/components/ui/display";
 import { ButtonLink } from "@/components/ui/button";
 import { formatarDataHora } from "@/lib/utils/datas";
+import { podeAcessar } from "@/lib/auth/permissoes";
 import { contextoAdmin } from "@/server/admin/contexto";
 
 export const metadata = { title: "Eventos" };
@@ -9,14 +10,19 @@ export const metadata = { title: "Eventos" };
 const tom = { publicado: "sucesso", rascunho: "neutro", cancelado: "perigo" } as const;
 
 export default async function EventosAdminPage() {
-  const { supabase } = await contextoAdmin("eventos");
+  const { supabase, perfil } = await contextoAdmin("eventos");
   const { data: eventos } = await supabase.from("eventos").select("id, titulo, inicio, status").order("inicio", { ascending: false });
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-5xl">Eventos</h1>
-        <ButtonLink href="/admin/eventos/novo">Novo evento</ButtonLink>
+        <div className="flex flex-wrap gap-2">
+          {podeAcessar(perfil.papel, "destaques") && (
+            <ButtonLink href="/admin/destaques/novo" variante="secundario">Anunciar destaque</ButtonLink>
+          )}
+          <ButtonLink href="/admin/eventos/novo">Novo evento</ButtonLink>
+        </div>
       </div>
       <ul className="flex flex-col gap-3">
         {(eventos ?? []).map((e) => (

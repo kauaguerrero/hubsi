@@ -75,6 +75,184 @@ export type Database = {
         }
         Relationships: []
       }
+      destaque_interessados: {
+        Row: {
+          aceite_privacidade_em: string
+          contatado_em: string | null
+          created_at: string
+          destaque_id: string
+          email: string
+          id: string
+          nome: string
+          observacao: string | null
+          turma: string | null
+          updated_at: string
+          whatsapp: string
+        }
+        Insert: {
+          aceite_privacidade_em?: string
+          contatado_em?: string | null
+          created_at?: string
+          destaque_id: string
+          email: string
+          id?: string
+          nome: string
+          observacao?: string | null
+          turma?: string | null
+          updated_at?: string
+          whatsapp: string
+        }
+        Update: {
+          aceite_privacidade_em?: string
+          contatado_em?: string | null
+          created_at?: string
+          destaque_id?: string
+          email?: string
+          id?: string
+          nome?: string
+          observacao?: string | null
+          turma?: string | null
+          updated_at?: string
+          whatsapp?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "destaque_interessados_destaque_id_fkey"
+            columns: ["destaque_id"]
+            isOneToOne: false
+            referencedRelation: "destaques"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      destaque_interesses: {
+        Row: {
+          interessado_id: string
+          item_id: string
+          preco_centavos: number
+          quantidade: number
+        }
+        Insert: {
+          interessado_id: string
+          item_id: string
+          preco_centavos: number
+          quantidade?: number
+        }
+        Update: {
+          interessado_id?: string
+          item_id?: string
+          preco_centavos?: number
+          quantidade?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "destaque_interesses_interessado_id_fkey"
+            columns: ["interessado_id"]
+            isOneToOne: false
+            referencedRelation: "destaque_interessados"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "destaque_interesses_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "destaque_itens"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      destaque_itens: {
+        Row: {
+          created_at: string
+          descricao: string | null
+          destaque_id: string
+          foto_url: string | null
+          id: string
+          nome: string
+          ordem: number
+          preco_centavos: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          descricao?: string | null
+          destaque_id: string
+          foto_url?: string | null
+          id?: string
+          nome: string
+          ordem?: number
+          preco_centavos?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          descricao?: string | null
+          destaque_id?: string
+          foto_url?: string | null
+          id?: string
+          nome?: string
+          ordem?: number
+          preco_centavos?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "destaque_itens_destaque_id_fkey"
+            columns: ["destaque_id"]
+            isOneToOne: false
+            referencedRelation: "destaques"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      destaques: {
+        Row: {
+          capa_url: string | null
+          created_at: string
+          cta_texto: string | null
+          data_evento: string | null
+          descricao: string | null
+          expira_em: string | null
+          id: string
+          link_externo: string | null
+          slug: string
+          status: Database["public"]["Enums"]["status_destaque"]
+          tipo: Database["public"]["Enums"]["tipo_destaque"]
+          titulo: string
+          updated_at: string
+        }
+        Insert: {
+          capa_url?: string | null
+          created_at?: string
+          cta_texto?: string | null
+          data_evento?: string | null
+          descricao?: string | null
+          expira_em?: string | null
+          id?: string
+          link_externo?: string | null
+          slug: string
+          status?: Database["public"]["Enums"]["status_destaque"]
+          tipo?: Database["public"]["Enums"]["tipo_destaque"]
+          titulo: string
+          updated_at?: string
+        }
+        Update: {
+          capa_url?: string | null
+          created_at?: string
+          cta_texto?: string | null
+          data_evento?: string | null
+          descricao?: string | null
+          expira_em?: string | null
+          id?: string
+          link_externo?: string | null
+          slug?: string
+          status?: Database["public"]["Enums"]["status_destaque"]
+          tipo?: Database["public"]["Enums"]["tipo_destaque"]
+          titulo?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       eventos: {
         Row: {
           capa_url: string | null
@@ -689,6 +867,7 @@ export type Database = {
     Enums: {
       forma_pagamento: "pix" | "cartao" | "indefinido"
       papel_admin: "superadmin" | "admin" | "editor"
+      status_destaque: "rascunho" | "publicado"
       status_evento: "rascunho" | "publicado" | "cancelado"
       status_lote: "aberto" | "fechado" | "em_producao" | "entregue"
       status_pedido:
@@ -700,6 +879,7 @@ export type Database = {
         | "expirado"
         | "cancelado"
         | "estornado"
+      tipo_destaque: "save_the_date" | "formulario" | "link"
       tipo_evento:
         | "palestra"
         | "workshop"
@@ -839,6 +1019,7 @@ export const Constants = {
     Enums: {
       forma_pagamento: ["pix", "cartao", "indefinido"],
       papel_admin: ["superadmin", "admin", "editor"],
+      status_destaque: ["rascunho", "publicado"],
       status_evento: ["rascunho", "publicado", "cancelado"],
       status_lote: ["aberto", "fechado", "em_producao", "entregue"],
       status_pedido: [
@@ -851,6 +1032,7 @@ export const Constants = {
         "cancelado",
         "estornado",
       ],
+      tipo_destaque: ["save_the_date", "formulario", "link"],
       tipo_evento: [
         "palestra",
         "workshop",

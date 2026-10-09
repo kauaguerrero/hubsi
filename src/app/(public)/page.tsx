@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { AuroraBackground } from "@/components/brand/aurora-background";
@@ -5,6 +6,8 @@ import { CircuitTrace } from "@/components/brand/circuit-trace";
 import { ContagemRegressiva } from "@/components/eventos/contagem-regressiva";
 import { ProdutoCard } from "@/components/loja/produto-card";
 import { ButtonLink } from "@/components/ui/button";
+import { ROTULO_TIPO, ctaDoDestaque } from "@/lib/destaques/regras";
+import { getDestaqueAtivo } from "@/server/queries/destaques";
 import { formatarDataHora } from "@/lib/utils/datas";
 import { getProximoEvento } from "@/server/queries/eventos";
 import { getLoteAberto, getProdutosDoLote } from "@/server/queries/loja";
@@ -55,9 +58,10 @@ const atalhos = [
 ];
 
 export default async function HomePage() {
-  const [evento, lote] = await Promise.all([
+  const [evento, lote, destaque] = await Promise.all([
     getProximoEvento(),
     getLoteAberto(),
+    getDestaqueAtivo(),
   ]);
   const produtos = lote ? await getProdutosDoLote(lote.id) : [];
 
@@ -97,6 +101,63 @@ export default async function HomePage() {
           </div>
         </section>
       </AuroraBackground>
+
+      {destaque && (
+        <section aria-labelledby="destaque" className="-mt-8">
+          <div className="bg-brand text-on-accent shadow-pop relative overflow-hidden rounded-3xl">
+            <div className="flex flex-col gap-6 p-6 sm:p-10 md:flex-row md:items-center md:justify-between">
+              <div className="flex max-w-2xl flex-col gap-4">
+                <p className="bg-surface/90 text-accent w-fit rounded-full px-3 py-1 font-mono text-xs font-medium tracking-wider uppercase">
+                  Em destaque · {ROTULO_TIPO[destaque.tipo]}
+                </p>
+                <h2 id="destaque" className="text-4xl sm:text-6xl">
+                  {destaque.titulo}
+                </h2>
+                {destaque.descricao && (
+                  <p className="line-clamp-3 text-lg opacity-95">
+                    {destaque.descricao}
+                  </p>
+                )}
+                {destaque.data_evento && (
+                  <p className="font-mono text-sm opacity-90">
+                    {formatarDataHora(destaque.data_evento)}
+                  </p>
+                )}
+                <div>
+                  {destaque.tipo === "link" && destaque.link_externo ? (
+                    <a
+                      href={destaque.link_externo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-surface text-accent inline-flex min-h-12 items-center justify-center rounded-full px-7 text-lg font-semibold shadow-card transition-transform hover:-translate-y-0.5"
+                    >
+                      {ctaDoDestaque(destaque)} →
+                    </a>
+                  ) : (
+                    <Link
+                      href={`/destaque/${destaque.slug}`}
+                      className="bg-surface text-accent inline-flex min-h-12 items-center justify-center rounded-full px-7 text-lg font-semibold shadow-card transition-transform hover:-translate-y-0.5"
+                    >
+                      {ctaDoDestaque(destaque)} →
+                    </Link>
+                  )}
+                </div>
+              </div>
+              {destaque.capa_url && (
+                <div className="relative aspect-video w-full overflow-hidden rounded-2xl md:w-72 md:shrink-0">
+                  <Image
+                    src={destaque.capa_url}
+                    alt=""
+                    fill
+                    sizes="(min-width: 768px) 288px, 100vw"
+                    className="object-cover"
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
 
       {evento && (
         <section aria-labelledby="proximo-evento" className="-mt-8">

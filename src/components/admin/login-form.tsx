@@ -3,15 +3,14 @@
 import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/field";
-import { enviarLinkLogin } from "@/server/actions/auth";
+import { entrarComSenha } from "@/server/actions/auth";
 import type { EstadoForm } from "@/server/actions/pedidos";
 
 export function LoginForm() {
   const [estado, formAction, pendente] = useActionState<EstadoForm, FormData>(
-    enviarLinkLogin,
+    entrarComSenha,
     {},
   );
-  const mensagem = estado.ok;
 
   return (
     <form
@@ -27,6 +26,14 @@ export function LoginForm() {
         autoComplete="email"
         required
       />
+      <Input
+        id="senha"
+        name="senha"
+        type="password"
+        label="Senha"
+        autoComplete="current-password"
+        required
+      />
       {estado.erro && (
         <p
           role="alert"
@@ -35,16 +42,8 @@ export function LoginForm() {
           {estado.erro}
         </p>
       )}
-      {mensagem && (
-        <p
-          role="status"
-          className="border-accent text-accent rounded-lg border px-4 py-3"
-        >
-          {mensagem}
-        </p>
-      )}
       <Button type="submit" tamanho="lg" disabled={pendente}>
-        {pendente ? "Enviando…" : "Enviar link de acesso"}
+        {pendente ? "Entrando…" : "Entrar"}
       </Button>
     </form>
   );

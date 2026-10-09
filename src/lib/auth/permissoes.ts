@@ -8,6 +8,7 @@ export type AreaAdmin =
   | "grafica"
   | "retirada"
   | "eventos"
+  | "destaques"
   | "hub"
   | "gestoes"
   | "usuarios";
@@ -24,6 +25,7 @@ export const PAPEIS_POR_AREA: Record<AreaAdmin, readonly PapelAdmin[]> = {
   grafica: ADMINS,
   retirada: ADMINS,
   eventos: TODOS,
+  destaques: ADMINS,
   hub: TODOS,
   gestoes: ADMINS,
   usuarios: ["superadmin"],
@@ -41,6 +43,7 @@ export const NAV_ADMIN: { href: string; rotulo: string; area: AreaAdmin }[] = [
   { href: "/admin/lotes", rotulo: "Lotes", area: "lotes" },
   { href: "/admin/produtos", rotulo: "Produtos", area: "produtos" },
   { href: "/admin/eventos", rotulo: "Eventos", area: "eventos" },
+  { href: "/admin/destaques", rotulo: "Destaques", area: "destaques" },
   { href: "/admin/hub", rotulo: "Hub", area: "hub" },
   { href: "/admin/gestoes", rotulo: "Gestões", area: "gestoes" },
   { href: "/admin/usuarios", rotulo: "Usuários", area: "usuarios" },
