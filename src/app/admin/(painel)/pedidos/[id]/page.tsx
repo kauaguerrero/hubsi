@@ -8,6 +8,7 @@ import { formatarBRL } from "@/lib/utils/money";
 import { formatarCpf } from "@/lib/validators/cpf";
 import { cancelarPedido, marcarDisponivel, marcarRetirado } from "@/server/actions/pedidos-admin";
 import { contextoAdmin } from "@/server/admin/contexto";
+import { ROTULO_PAGAMENTO } from "@/lib/utils/rotulos";
 
 export const metadata = { title: "Pedido" };
 
@@ -75,8 +76,8 @@ export default async function PedidoAdminPage({ params, searchParams }: PageProp
           <span>Total</span><strong>{formatarBRL(pedido.total_centavos)}</strong>
         </p>
         <p className="text-sm text-muted">
-          Pagamento: {pedido.forma_pagamento}{pedido.pago_em ? ` · pago em ${formatarDataHora(pedido.pago_em)}` : ""}
-          {pedido.invoice_url && <> · <a href={pedido.invoice_url} target="_blank" rel="noopener noreferrer" className="text-accent underline">fatura no Asaas</a></>}
+          Pagamento: {ROTULO_PAGAMENTO[pedido.forma_pagamento] ?? pedido.forma_pagamento}{pedido.pago_em ? ` · Pago em ${formatarDataHora(pedido.pago_em)}` : ""}
+          {pedido.invoice_url && <> · <a href={pedido.invoice_url} target="_blank" rel="noopener noreferrer" className="text-accent underline">Fatura no Asaas</a></>}
         </p>
       </Card>
 

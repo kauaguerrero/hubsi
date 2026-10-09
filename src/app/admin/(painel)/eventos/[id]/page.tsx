@@ -9,6 +9,7 @@ import { isoParaDatetimeLocal } from "@/lib/utils/datas";
 import { contextoAdmin } from "@/server/admin/contexto";
 import {
   adicionarPalestrante,
+  definirBannerEvento,
   definirCapaEvento,
   excluirEvento,
   removerPalestrante,
@@ -60,6 +61,20 @@ export default async function EventoAdminPage({ params }: PageProps<"/admin/even
 
       {!novo && evento && (
         <>
+          <section aria-labelledby="banner" className="flex flex-col gap-4">
+            <h2 id="banner" className="text-3xl">Banner</h2>
+            <p className="text-muted">Imagem larga (16:9, ideal 1600×900). Aparece no topo da página do evento e no cartão de próximo evento da home.</p>
+            {evento.banner_url && (
+              <div className="relative aspect-video max-w-md overflow-hidden rounded-lg border border-border">
+                <Image src={evento.banner_url} alt={`Banner de ${evento.titulo}`} fill sizes="448px" className="object-cover" />
+              </div>
+            )}
+            <UploadImagem bucket="eventos" pasta={`${id}/banner`} rotulo="Enviar banner (JPG, PNG ou WebP, até 5 MB)" aoEnviar={definirBannerEvento.bind(null, id)} />
+            {evento.banner_url && (
+              <BotaoAcao action={definirBannerEvento.bind(null, id, null) as () => Promise<void>} confirmar="Remover o banner?" className="w-fit">Remover banner</BotaoAcao>
+            )}
+          </section>
+
           <section aria-labelledby="capa" className="flex flex-col gap-4">
             <h2 id="capa" className="text-3xl">Capa</h2>
             {evento.capa_url && (

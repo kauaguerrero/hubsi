@@ -35,18 +35,20 @@ export function podeAcessar(papel: PapelAdmin | null | undefined, area: AreaAdmi
   return !!papel && PAPEIS_POR_AREA[area].includes(papel);
 }
 
-export const NAV_ADMIN: { href: string; rotulo: string; area: AreaAdmin }[] = [
-  { href: "/admin", rotulo: "Painel", area: "dashboard" },
-  { href: "/admin/pedidos", rotulo: "Pedidos", area: "pedidos" },
-  { href: "/admin/retirada", rotulo: "Retirada", area: "retirada" },
-  { href: "/admin/grafica", rotulo: "Gráfica", area: "grafica" },
-  { href: "/admin/lotes", rotulo: "Lotes", area: "lotes" },
-  { href: "/admin/produtos", rotulo: "Produtos", area: "produtos" },
-  { href: "/admin/eventos", rotulo: "Eventos", area: "eventos" },
-  { href: "/admin/destaques", rotulo: "Destaques", area: "destaques" },
-  { href: "/admin/hub", rotulo: "Hub", area: "hub" },
-  { href: "/admin/gestoes", rotulo: "Gestões", area: "gestoes" },
-  { href: "/admin/usuarios", rotulo: "Usuários", area: "usuarios" },
+export type ItemNav = { href: string; rotulo: string; area: AreaAdmin; grupo: string; icone: string };
+
+export const NAV_ADMIN: ItemNav[] = [
+  { href: "/admin", rotulo: "Painel", area: "dashboard", grupo: "Visão geral", icone: "painel" },
+  { href: "/admin/pedidos", rotulo: "Pedidos", area: "pedidos", grupo: "Loja", icone: "pedidos" },
+  { href: "/admin/retirada", rotulo: "Retirada", area: "retirada", grupo: "Loja", icone: "retirada" },
+  { href: "/admin/grafica", rotulo: "Gráfica", area: "grafica", grupo: "Loja", icone: "grafica" },
+  { href: "/admin/lotes", rotulo: "Lotes", area: "lotes", grupo: "Loja", icone: "lotes" },
+  { href: "/admin/produtos", rotulo: "Produtos", area: "produtos", grupo: "Loja", icone: "produtos" },
+  { href: "/admin/eventos", rotulo: "Eventos", area: "eventos", grupo: "Conteúdo", icone: "eventos" },
+  { href: "/admin/destaques", rotulo: "Destaques", area: "destaques", grupo: "Conteúdo", icone: "destaques" },
+  { href: "/admin/hub", rotulo: "Hub", area: "hub", grupo: "Conteúdo", icone: "hub" },
+  { href: "/admin/gestoes", rotulo: "Gestões", area: "gestoes", grupo: "Conteúdo", icone: "gestoes" },
+  { href: "/admin/usuarios", rotulo: "Usuários", area: "usuarios", grupo: "Sistema", icone: "usuarios" },
 ];
 
 /** Primeira página que o papel pode abrir (editor não vê o painel). */

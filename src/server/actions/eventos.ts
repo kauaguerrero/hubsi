@@ -93,3 +93,12 @@ export async function removerPalestrante(eventoId: string, palestranteId: string
   revalidatePath("/", "layout");
   revalidatePath(`/admin/eventos/${eventoId}`);
 }
+
+export async function definirBannerEvento(eventoId: string, url: string | null): Promise<EstadoForm | void> {
+  const ctx = await contextoAdmin("eventos");
+  if (url && !caminhoNoStorage(url, publicEnv.NEXT_PUBLIC_SUPABASE_URL, "eventos")) return { erro: "URL de imagem inválida." };
+  const { error } = await ctx.supabase.from("eventos").update({ banner_url: url }).eq("id", eventoId);
+  if (error) return erroDoBanco(error) ?? undefined;
+  revalidatePath("/", "layout");
+  revalidatePath(`/admin/eventos/${eventoId}`);
+}

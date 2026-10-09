@@ -47,9 +47,9 @@ export default async function EventoPage({ params }: PageProps<"/eventos/[slug]"
         </p>
       </header>
 
-      {evento.capa_url && (
+      {(evento.banner_url ?? evento.capa_url) && (
         <div className="relative aspect-video overflow-hidden rounded-xl border border-border">
-          <Image src={evento.capa_url} alt={`Capa do evento ${evento.titulo}`} fill sizes="100vw" className="object-cover" priority />
+          <Image src={(evento.banner_url ?? evento.capa_url) as string} alt={`Capa do evento ${evento.titulo}`} fill sizes="100vw" className="object-cover" priority />
         </div>
       )}
 

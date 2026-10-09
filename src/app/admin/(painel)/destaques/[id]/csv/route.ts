@@ -36,7 +36,7 @@ export async function GET(_req: Request, { params }: RouteContext<"/admin/destaq
       p.interesses.map((i) => `${i.quantidade}x ${nomeItem.get(i.item_id) ?? "item removido"}`).join(" | "),
       (valor / 100).toFixed(2).replace(".", ","),
       p.observacao ?? "",
-      p.contatado_em ? "sim" : "não",
+      p.contatado_em ? "Sim" : "Não",
       p.created_at,
     ]);
   }

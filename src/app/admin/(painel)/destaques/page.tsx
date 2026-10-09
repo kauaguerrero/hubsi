@@ -37,7 +37,7 @@ export default async function DestaquesAdminPage() {
                   </p>
                 </div>
                 <Badge tom={ativo ? "sucesso" : d.status === "publicado" ? "perigo" : "neutro"}>
-                  {ativo ? "no ar" : d.status === "publicado" ? "expirado" : "rascunho"}
+                  {ativo ? "No ar" : d.status === "publicado" ? "Expirado" : "Rascunho"}
                 </Badge>
               </Card>
             </li>

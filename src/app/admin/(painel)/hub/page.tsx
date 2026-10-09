@@ -36,7 +36,7 @@ export default async function HubAdminPage() {
             <summary className="flex min-h-11 cursor-pointer flex-wrap items-center gap-3 py-2">
               <span className="font-display text-xl font-bold">{l.titulo}</span>
               <Badge>{l.categoria}</Badge>
-              {!l.ativo && <Badge tom="perigo">inativo</Badge>}
+              {!l.ativo && <Badge tom="perigo">Inativo</Badge>}
             </summary>
             <div className="flex flex-col gap-4 py-4">
               <FormAcao action={salvarLinkHub.bind(null, l.id)}>

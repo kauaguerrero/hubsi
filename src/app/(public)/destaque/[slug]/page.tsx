@@ -34,9 +34,9 @@ export default async function DestaquePage({ params }: PageProps<"/destaque/[slu
         {d.data_evento && <p className="font-mono text-muted">{formatarDataHora(d.data_evento)}</p>}
       </header>
 
-      {d.capa_url && (
+      {(d.banner_url ?? d.capa_url) && (
         <div className="relative aspect-video overflow-hidden rounded-2xl border border-border">
-          <Image src={d.capa_url} alt={`Imagem de ${d.titulo}`} fill sizes="(min-width: 768px) 768px, 100vw" className="object-cover" priority />
+          <Image src={(d.banner_url ?? d.capa_url) as string} alt={`Imagem de ${d.titulo}`} fill sizes="(min-width: 768px) 768px, 100vw" className="object-cover" priority />
         </div>
       )}
 

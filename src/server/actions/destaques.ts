@@ -241,3 +241,23 @@ export async function registrarInteresse(destaqueId: string, _anterior: EstadoFo
       : "Interesse registrado! Avisaremos você quando abrir.",
   };
 }
+
+export async function definirBannerDestaque(destaqueId: string, url: string | null): Promise<EstadoForm | void> {
+  const ctx = await contextoAdmin("destaques");
+  if (url && !caminhoNoStorage(url, publicEnv.NEXT_PUBLIC_SUPABASE_URL, "eventos")) return { erro: "URL de imagem inválida." };
+  const { error } = await ctx.supabase.from("destaques").update({ banner_url: url }).eq("id", destaqueId);
+  if (error) return erroDoBanco(error) ?? undefined;
+  revalidar(destaqueId);
+}
+
+export async function definirFotoItem(destaqueId: string, itemId: string, url: string): Promise<EstadoForm | void> {
+  const ctx = await contextoAdmin("destaques");
+  if (!caminhoNoStorage(url, publicEnv.NEXT_PUBLIC_SUPABASE_URL, "eventos")) return { erro: "URL de imagem inválida." };
+  const { error } = await ctx.supabase
+    .from("destaque_itens")
+    .update({ foto_url: url })
+    .eq("id", itemId)
+    .eq("destaque_id", destaqueId);
+  if (error) return erroDoBanco(error) ?? undefined;
+  revalidar(destaqueId);
+}

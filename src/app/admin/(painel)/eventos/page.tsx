@@ -4,6 +4,7 @@ import { ButtonLink } from "@/components/ui/button";
 import { formatarDataHora } from "@/lib/utils/datas";
 import { podeAcessar } from "@/lib/auth/permissoes";
 import { contextoAdmin } from "@/server/admin/contexto";
+import { ROTULO_STATUS_EVENTO } from "@/lib/utils/rotulos";
 
 export const metadata = { title: "Eventos" };
 
@@ -32,7 +33,7 @@ export default async function EventosAdminPage() {
                 <Link href={`/admin/eventos/${e.id}`} className="font-display text-2xl font-bold hover:text-accent">{e.titulo}</Link>
                 <p className="font-mono text-sm text-muted">{formatarDataHora(e.inicio)}</p>
               </div>
-              <Badge tom={tom[e.status]}>{e.status}</Badge>
+              <Badge tom={tom[e.status]}>{ROTULO_STATUS_EVENTO[e.status] ?? e.status}</Badge>
             </Card>
           </li>
         ))}

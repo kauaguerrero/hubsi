@@ -102,7 +102,32 @@ export default async function HomePage() {
         </section>
       </AuroraBackground>
 
-      {destaque && (
+      {destaque?.banner_url && (
+        <section aria-label={`Destaque: ${destaque.titulo}`} className="-mt-8">
+          <Link
+            href={
+              destaque.tipo === "link" && destaque.link_externo
+                ? destaque.link_externo
+                : `/destaque/${destaque.slug}`
+            }
+            {...(destaque.tipo === "link" && destaque.link_externo
+              ? { target: "_blank", rel: "noopener noreferrer" }
+              : {})}
+            className="shadow-pop group relative block aspect-video overflow-hidden rounded-3xl transition-transform duration-300 hover:-translate-y-1"
+          >
+            <Image
+              src={destaque.banner_url}
+              alt={`${destaque.titulo}. ${ctaDoDestaque(destaque)}`}
+              fill
+              priority
+              sizes="(min-width: 1152px) 1152px, 100vw"
+              className="object-cover"
+            />
+          </Link>
+        </section>
+      )}
+
+      {destaque && !destaque.banner_url && (
         <section aria-labelledby="destaque" className="-mt-8">
           <div className="bg-brand text-on-accent shadow-pop relative overflow-hidden rounded-3xl">
             <div className="flex flex-col gap-6 p-6 sm:p-10 md:flex-row md:items-center md:justify-between">
@@ -129,14 +154,14 @@ export default async function HomePage() {
                       href={destaque.link_externo}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-surface text-accent inline-flex min-h-12 items-center justify-center rounded-full px-7 text-lg font-semibold shadow-card transition-transform hover:-translate-y-0.5"
+                      className="bg-surface text-accent shadow-card inline-flex min-h-12 items-center justify-center rounded-full px-7 text-lg font-semibold transition-transform hover:-translate-y-0.5"
                     >
                       {ctaDoDestaque(destaque)} →
                     </a>
                   ) : (
                     <Link
                       href={`/destaque/${destaque.slug}`}
-                      className="bg-surface text-accent inline-flex min-h-12 items-center justify-center rounded-full px-7 text-lg font-semibold shadow-card transition-transform hover:-translate-y-0.5"
+                      className="bg-surface text-accent shadow-card inline-flex min-h-12 items-center justify-center rounded-full px-7 text-lg font-semibold transition-transform hover:-translate-y-0.5"
                     >
                       {ctaDoDestaque(destaque)} →
                     </Link>
@@ -161,26 +186,44 @@ export default async function HomePage() {
 
       {evento && (
         <section aria-labelledby="proximo-evento" className="-mt-8">
-          <div className="bg-brand-soft border-accent/20 shadow-card relative overflow-hidden rounded-3xl border p-6 sm:p-10">
-            <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-              <div className="flex flex-col gap-3">
-                <p className="bg-surface/80 text-accent w-fit rounded-full px-3 py-1 font-mono text-xs font-medium tracking-wider uppercase">
-                  Próximo evento
-                </p>
-                <h2 id="proximo-evento" className="text-3xl sm:text-5xl">
-                  <Link
-                    href={`/eventos/${evento.slug}`}
-                    className="hover:text-accent transition-colors"
-                  >
-                    {evento.titulo}
-                  </Link>
-                </h2>
-                <p className="text-muted font-mono text-sm">
-                  {formatarDataHora(evento.inicio)}
-                  {evento.local ? ` · ${evento.local}` : ""}
-                </p>
+          <div className="bg-brand-soft border-accent/20 shadow-card relative overflow-hidden rounded-3xl border">
+            {evento.banner_url && (
+              <Link
+                href={`/eventos/${evento.slug}`}
+                aria-hidden="true"
+                tabIndex={-1}
+                className="relative block aspect-video sm:aspect-[21/9]"
+              >
+                <Image
+                  src={evento.banner_url}
+                  alt=""
+                  fill
+                  sizes="(min-width: 1152px) 1152px, 100vw"
+                  className="object-cover"
+                />
+              </Link>
+            )}
+            <div className="p-6 sm:p-10">
+              <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+                <div className="flex flex-col gap-3">
+                  <p className="bg-surface/80 text-accent w-fit rounded-full px-3 py-1 font-mono text-xs font-medium tracking-wider uppercase">
+                    Próximo evento
+                  </p>
+                  <h2 id="proximo-evento" className="text-3xl sm:text-5xl">
+                    <Link
+                      href={`/eventos/${evento.slug}`}
+                      className="hover:text-accent transition-colors"
+                    >
+                      {evento.titulo}
+                    </Link>
+                  </h2>
+                  <p className="text-muted font-mono text-sm">
+                    {formatarDataHora(evento.inicio)}
+                    {evento.local ? ` · ${evento.local}` : ""}
+                  </p>
+                </div>
+                <ContagemRegressiva alvo={evento.inicio} />
               </div>
-              <ContagemRegressiva alvo={evento.inicio} />
             </div>
           </div>
         </section>

@@ -2,18 +2,22 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { BotaoAcao } from "@/components/admin/botao-acao";
 import { FormAcao } from "@/components/admin/form-acao";
+import { QrDestaque } from "@/components/admin/qr-destaque";
 import { UploadImagem } from "@/components/admin/upload-imagem";
 import { Badge, Card } from "@/components/ui/display";
 import { ButtonLink, buttonClass } from "@/components/ui/button";
 import { Input, Select, Textarea } from "@/components/ui/field";
-import { calcularKpis, destaqueAtivo } from "@/lib/destaques/regras";
-import { formatarDataHora, isoParaDatetimeLocal } from "@/lib/utils/datas";
+import { publicEnv } from "@/lib/env";
+import { calcularKpis, ctaDoDestaque, destaqueAtivo } from "@/lib/destaques/regras";
+import { formatarData, formatarDataHora, isoParaDatetimeLocal } from "@/lib/utils/datas";
 import { formatarBRL } from "@/lib/utils/money";
 import { contextoAdmin } from "@/server/admin/contexto";
 import {
   adicionarItemDestaque,
   alternarContatado,
+  definirBannerDestaque,
   definirCapaDestaque,
+  definirFotoItem,
   excluirDestaque,
   removerInteressado,
   removerItemDestaque,
@@ -53,9 +57,16 @@ export default async function DestaqueAdminPage({ params }: PageProps<"/admin/de
         {destaque && (
           <div className="flex flex-wrap items-center gap-3">
             <Badge tom={ativo ? "sucesso" : destaque.status === "publicado" ? "perigo" : "neutro"}>
-              {ativo ? "no ar" : destaque.status === "publicado" ? "expirado" : "rascunho"}
+              {ativo ? "No ar" : destaque.status === "publicado" ? "Expirado" : "Rascunho"}
             </Badge>
             <ButtonLink href={`/destaque/${destaque.slug}`} variante="secundario">Ver página pública</ButtonLink>
+            <QrDestaque
+              titulo={destaque.titulo}
+              slug={destaque.slug}
+              url={`${publicEnv.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "")}/destaque/${destaque.slug}`}
+              cta={ctaDoDestaque(destaque)}
+              apoio={destaque.expira_em ? `Até ${formatarData(destaque.expira_em)}` : undefined}
+            />
           </div>
         )}
       </div>
@@ -133,7 +144,7 @@ export default async function DestaqueAdminPage({ params }: PageProps<"/admin/de
                       </div>
                       <div className="text-right">
                         <p className="font-mono text-lg">{formatarBRL(valor)}</p>
-                        <Badge tom={p.contatado_em ? "sucesso" : "neutro"}>{p.contatado_em ? "contatado" : "a contatar"}</Badge>
+                        <Badge tom={p.contatado_em ? "sucesso" : "neutro"}>{p.contatado_em ? "Contatado" : "A contatar"}</Badge>
                       </div>
                     </div>
                     <p className="text-sm">
@@ -186,8 +197,22 @@ export default async function DestaqueAdminPage({ params }: PageProps<"/admin/de
 
       {destaque && (
         <>
+          <section aria-labelledby="banner" className="flex flex-col gap-4">
+            <h2 id="banner" className="text-3xl">Banner</h2>
+            <p className="text-muted">Imagem larga (16:9, ideal 1600×900) já com o texto. Se houver banner, ele substitui o cartão de texto na página inicial.</p>
+            {destaque.banner_url && (
+              <div className="relative aspect-video max-w-xl overflow-hidden rounded-lg border border-border">
+                <Image src={destaque.banner_url} alt={`Banner de ${destaque.titulo}`} fill sizes="576px" className="object-cover" />
+              </div>
+            )}
+            <UploadImagem bucket="eventos" pasta={`destaques/${id}`} rotulo="Enviar banner (JPG, PNG ou WebP, até 5 MB)" aoEnviar={definirBannerDestaque.bind(null, id)} />
+            {destaque.banner_url && (
+              <BotaoAcao action={definirBannerDestaque.bind(null, id, null) as () => Promise<void>} confirmar="Remover o banner?" className="w-fit">Remover banner</BotaoAcao>
+            )}
+          </section>
+
           <section aria-labelledby="capa" className="flex flex-col gap-4">
-            <h2 id="capa" className="text-3xl">Imagem</h2>
+            <h2 id="capa" className="text-3xl">Imagem de apoio</h2>
             {destaque.capa_url && (
               <div className="relative aspect-video max-w-md overflow-hidden rounded-lg border border-border">
                 <Image src={destaque.capa_url} alt={`Imagem de ${destaque.titulo}`} fill sizes="448px" className="object-cover" />
@@ -203,9 +228,19 @@ export default async function DestaqueAdminPage({ params }: PageProps<"/admin/de
               <ul className="flex flex-col gap-2">
                 {itens.map((it) => (
                   <li key={it.id}>
-                    <Card className="flex items-center justify-between gap-3 py-3">
-                      <span>{it.nome} <span className="font-mono text-sm text-muted">{formatarBRL(it.preco_centavos)}</span></span>
-                      <BotaoAcao action={removerItemDestaque.bind(null, id, it.id)} confirmar="Remover este item? Os interesses nele também somem.">Remover</BotaoAcao>
+                    <Card className="flex flex-col gap-3 py-3">
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-3">
+                          {it.foto_url && (
+                            <span className="relative size-14 shrink-0 overflow-hidden rounded-lg border border-border">
+                              <Image src={it.foto_url} alt={it.nome} fill sizes="56px" className="object-cover" />
+                            </span>
+                          )}
+                          <span>{it.nome} <span className="font-mono text-sm text-muted">{formatarBRL(it.preco_centavos)}</span></span>
+                        </div>
+                        <BotaoAcao action={removerItemDestaque.bind(null, id, it.id)} confirmar="Remover este item? Os interesses nele também somem.">Remover</BotaoAcao>
+                      </div>
+                      <UploadImagem bucket="eventos" pasta={`destaques/${id}/itens`} rotulo={it.foto_url ? "Trocar foto do item" : "Enviar foto do item"} aoEnviar={definirFotoItem.bind(null, id, it.id)} />
                     </Card>
                   </li>
                 ))}

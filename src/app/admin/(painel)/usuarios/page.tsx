@@ -5,6 +5,7 @@ import { Input, Select } from "@/components/ui/field";
 import { podeAlterarUsuario } from "@/lib/auth/permissoes";
 import { alterarPapel, convidarUsuario, removerUsuario } from "@/server/actions/usuarios";
 import { contextoAdmin } from "@/server/admin/contexto";
+import { ROTULO_PAPEL } from "@/lib/utils/rotulos";
 
 export const metadata = { title: "Usuários" };
 
@@ -44,7 +45,7 @@ export default async function UsuariosPage() {
                   <p className="font-display text-xl font-bold">{u.nome}</p>
                   <p className="text-sm text-muted">{u.email}</p>
                 </div>
-                <Badge tom="acento">{u.papel}</Badge>
+                <Badge tom="acento">{ROTULO_PAPEL[u.papel] ?? u.papel}</Badge>
               </div>
               <div className="flex flex-wrap items-end gap-3">
                 <FormAcao action={alterarPapel.bind(null, u.user_id)} rotulo="Mudar papel" className="flex flex-wrap items-end gap-3">

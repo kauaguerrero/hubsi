@@ -5,8 +5,6 @@ export const metadata: Metadata = {
   description: "Como o Hub S.I. coleta, usa e protege os dados de quem compra na loja do curso.",
 };
 
-const aDefinir = <span className="text-accent">[a definir pelo D.A.]</span>;
-
 export default function PrivacidadePage() {
   return (
     <article className="flex max-w-2xl flex-col gap-8">
@@ -23,6 +21,10 @@ export default function PrivacidadePage() {
           confirmar a compra por e-mail, organizar a produção e a retirada dos produtos e entrar em contato sobre o
           pedido.
         </p>
+        <p className="text-muted">
+          Nos formulários de interesse em pré-venda, coletamos nome, e-mail, WhatsApp, turma (opcional) e os itens
+          escolhidos, apenas para avisar você sobre o lançamento e estimar a demanda. Esses formulários não pedem CPF.
+        </p>
       </section>
 
       <section className="flex flex-col gap-2">
@@ -38,7 +40,10 @@ export default function PrivacidadePage() {
 
       <section className="flex flex-col gap-2">
         <h2 className="text-3xl">Por quanto tempo guardamos</h2>
-        <p className="text-muted">Prazo de guarda dos dados: {aDefinir}.</p>
+        <p className="text-muted">
+          Guardamos os dados durante a gestão da chapa atual do D.A. Ao fim da gestão, eles deixam de ser usados e são
+          eliminados, salvo quando houver obrigação legal de mantê-los.
+        </p>
       </section>
 
       <section className="flex flex-col gap-2">
@@ -51,7 +56,13 @@ export default function PrivacidadePage() {
 
       <section className="flex flex-col gap-2">
         <h2 className="text-3xl">Contato</h2>
-        <p className="text-muted">Canal de contato para assuntos de privacidade: {aDefinir}.</p>
+        <p className="text-muted">
+          Para assuntos de privacidade, escreva para{" "}
+          <a href="mailto:da.sistemas@fafram.com.br" className="text-accent underline underline-offset-4">
+            da.sistemas@fafram.com.br
+          </a>
+          .
+        </p>
       </section>
     </article>
   );

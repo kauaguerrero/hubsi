@@ -207,6 +207,7 @@ export type Database = {
       }
       destaques: {
         Row: {
+          banner_url: string | null
           capa_url: string | null
           created_at: string
           cta_texto: string | null
@@ -222,6 +223,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          banner_url?: string | null
           capa_url?: string | null
           created_at?: string
           cta_texto?: string | null
@@ -237,6 +239,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          banner_url?: string | null
           capa_url?: string | null
           created_at?: string
           cta_texto?: string | null
@@ -255,6 +258,7 @@ export type Database = {
       }
       eventos: {
         Row: {
+          banner_url: string | null
           capa_url: string | null
           created_at: string
           descricao: string | null
@@ -270,6 +274,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          banner_url?: string | null
           capa_url?: string | null
           created_at?: string
           descricao?: string | null
@@ -285,6 +290,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          banner_url?: string | null
           capa_url?: string | null
           created_at?: string
           descricao?: string | null

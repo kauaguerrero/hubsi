@@ -3,6 +3,7 @@ import { Badge, Card } from "@/components/ui/display";
 import { ButtonLink } from "@/components/ui/button";
 import { formatarDataHora } from "@/lib/utils/datas";
 import { contextoAdmin } from "@/server/admin/contexto";
+import { ROTULO_LOTE } from "@/lib/utils/rotulos";
 
 export const metadata = { title: "Lotes" };
 
@@ -26,7 +27,7 @@ export default async function LotesPage({ searchParams }: PageProps<"/admin/lote
                 <Link href={`/admin/lotes/${l.id}`} className="font-display text-2xl font-bold hover:text-accent">{l.nome}</Link>
                 <p className="font-mono text-sm text-muted">{formatarDataHora(l.abre_em)} → {formatarDataHora(l.fecha_em)}</p>
               </div>
-              <Badge tom={l.status === "aberto" ? "sucesso" : "neutro"}>{l.status}</Badge>
+              <Badge tom={l.status === "aberto" ? "sucesso" : "neutro"}>{ROTULO_LOTE[l.status] ?? l.status}</Badge>
             </Card>
           </li>
         ))}

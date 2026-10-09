@@ -80,3 +80,5 @@ Outras verificações: links do Hub só `http(s)` (schema + teste); URLs de imag
 - Admin: `/admin/destaques` (botão também em Eventos), KPIs (interessados, valor esperado, unidades, contatados, demanda por item), lista com WhatsApp, "contatado" e CSV (com e-mail/WhatsApp, sem CPF — não é coletado).
 - Registro público via server action com service role, Zod, rate limit por IP (8/10 min) e preço sempre do banco; mesmo e-mail no mesmo destaque atualiza o registro.
 - Login do painel trocado de link mágico para e-mail e senha (`entrarComSenha`).
+- Dependências extras (fora do plano): `qrcode` (+ `@types/qrcode`) para gerar a matriz do QR e `jspdf` para exportar o cartaz em PDF, ambos usados só no cliente em `qr-destaque.tsx`.
+- Banners (migration `0006_banners.sql`): `banner_url` em `eventos` e `destaques`, enviado pelo admin (seção "Banner"). Destaque com banner mostra só a imagem (clicável) na home; evento com banner mostra a imagem no cartão de próximo evento e no topo da página do evento. Banner da pré-venda publicado em `destaques/<id>/banner-prevenda.png` (bucket `eventos`).

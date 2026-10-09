@@ -29,7 +29,7 @@ export default async function ProdutosPage({ searchParams }: PageProps<"/admin/p
                 <Link href={`/admin/produtos/${p.id}`} className="font-display text-2xl font-bold hover:text-accent">{p.nome}</Link>
                 <p className="font-mono text-sm text-muted">{formatarBRL(p.preco_centavos)} · {p.lotes?.nome}</p>
               </div>
-              <Badge tom={p.ativo ? "sucesso" : "neutro"}>{p.ativo ? "ativo" : "inativo"}</Badge>
+              <Badge tom={p.ativo ? "sucesso" : "neutro"}>{p.ativo ? "Ativo" : "Inativo"}</Badge>
             </Card>
           </li>
         ))}
